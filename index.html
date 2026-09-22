@@ -2,8 +2,9 @@
 <html lang="en" class="scroll-smooth h-full">
 <head>
   <meta charset="UTF-8">
-  <meta name="Author" content="Ipyana CPA(T), Developer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="Author" content="The Edwins">
+  <meta name="Established" content="July 2026 (live on Site)"
   <title>PameTours | Your Journey Begins Here</title>
   
   <!-- FAVICON -->
@@ -22,6 +23,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+  <style>
+    @keyframes floatAnimal {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+    .animate-wildlife {
+      animation: floatAnimal 4s ease-in-out infinite;
+    }
+  </style>
+
   <script>
     tailwind.config = {
       theme: {
@@ -39,19 +50,144 @@
     }
   </script>
 </head>
-<body class="bg-brand-sand text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between" 
+<body class="bg-brand-sand text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between text-base md:text-lg" 
       x-data="{ 
-        activePage: 'contact', 
+        activePage: 'home', 
+        selectedDestination: 'tarangire',
         selectedPackage: null, 
         modalOpen: false, 
         paymentModalOpen: false,
+        contactSubmitted: false,
         chatOpen: false,
         userMessage: '',
-        contactSubmitted: false,
-        contactForm: { name: '', email: '', phone: '', package: '4 Days Safari', message: '' },
-        chatMessages: [
-          { sender: 'ai', text: 'Jambo! I am your PameTours AI Assistant. How can I help you plan your Tanzanian safari today?' }
+        currentLang: 'en',
+        languages: [
+          { code: 'en', name: 'English', flag: '🇬🇧' },
+          { code: 'es', name: 'Español', flag: '🇪🇸' },
+          { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+          { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+          { code: 'zh', name: '中文', flag: '🇨🇳' },
+          { code: 'fr', name: 'Français', flag: '🇫🇷' }
         ],
+        t: {
+          en: {
+            home: 'Home', packages: 'Packages', accommodation: 'Accommodation', about: 'About Us', contact: 'Contact Us',
+            pay: 'Pay / Deposit', ai: 'AI Assistant', heroTag: 'Your Journey Begins Here', heroTitle: 'Unforgettable Wildlife Expeditions & Safari Adventures',
+            heroDesc: 'Experience Tanzania’s majestic landscapes, culture, and wildlife across customized Standard, Mid-range, and Luxury safaris.',
+            explorePkgs: 'Explore All 4 Packages', getQuote: 'Get Free Safari Quote', viewDetails: 'View Details', whatsapp: 'WhatsApp',
+            pricingTitle: 'Pricing & Safari Plans', pricingDesc: 'Transparent per person pricing options based on accommodation tier and party size.',
+            bookNow: 'Book Now', safariKeywords: ['safari', 'tour', 'tanzania', 'price', 'cost', 'serengeti', 'ngorongoro', 'tarangire', 'hotel', 'lodge', 'camp', 'book', 'pay', 'trip', 'weather', 'animal', 'lion', 'migration'],
+            pkgHeaderTitle: 'Our Tanzania Safari Packages', pkgHeaderDesc: 'Choose from 4 tailored itineraries featuring Standard, Mid-Range, and Luxury accommodation options.',
+            days4Title: '4 Days Tanzania Safari Cultural & Expedition', days4Desc: 'Combine iconic national park game drives with authentic cultural immersion with local tribes.',
+            days5Title: '5 Days Tour in Tanzania', days5Desc: 'A balanced safari highlight exploring Tarangire, Ngorongoro Crater, and Lake Manyara.',
+            days6ExpTitle: '6 Days Northern Tanzania Safari Expedition', days6ExpDesc: 'Deep dive into the classic Northern Circuit including extensive Serengeti game drives.',
+            days6WildTitle: '6 Days Tanzania Wildlife Adventures', days6WildDesc: 'Focused wildlife tracking across Big Five hot spots with specialized safari vehicles.',
+            standardTier: 'Standard Tier', midTier: 'Mid-Range Tier', luxuryTier: 'Luxury Tier',
+            accTitle: 'Safari Camps & Lodges', accDesc: 'Select a destination below to explore verified accommodations across Standard, Mid-Range, and Luxury tiers.',
+            aboutTitle: 'About PameTours', aboutDesc: 'Based in Arusha, Tanzania, PameTours is a premier indigenous tour operator dedicated to crafting unforgettable wildlife safaris, luxury accommodations, and rich cultural interactions.',
+            contactTitle: 'Get in Touch with Safari Experts', contactDesc: 'Have questions about itineraries, customized routes, or direct bookings? Reach out to our Arusha team.'
+          },
+          es: {
+            home: 'Inicio', packages: 'Paquetes', accommodation: 'Alojamiento', about: 'Nosotros', contact: 'Contacto',
+            pay: 'Pagar / Depósito', ai: 'Asistente IA', heroTag: 'Su Viaje Comienza Aquí', heroTitle: 'Inolvidables Expediciones de Vida Silvestre y Safari',
+            heroDesc: 'Experimente los majestuosos paisajes, la cultura y la vida silvestre de Tanzania en safaris personalizados.',
+            explorePkgs: 'Explorar Paquetes', getQuote: 'Obtener Cotización', viewDetails: 'Ver Detalles', whatsapp: 'WhatsApp',
+            pricingTitle: 'Precios y Planes de Safari', pricingDesc: 'Opciones de precios transparentes por persona según la categoría de alojamiento.',
+            bookNow: 'Reservar Ahora', safariKeywords: ['safari', 'tour', 'tanzania', 'precio', 'costo', 'serengeti', 'ngorongoro', 'tarangire', 'hotel', 'reserva', 'viaje', 'animal', 'leon'],
+            pkgHeaderTitle: 'Nuestros Paquetes de Safari en Tanzania', pkgHeaderDesc: 'Elija entre 4 itinerarios personalizados con opciones de alojamiento Estándar, Gama Media y Lujo.',
+            days4Title: 'Safari Cultural y Expedición de 4 Días en Tanzania', days4Desc: 'Combine safaris en parques nacionales con una auténtica inmersión cultural con tribus locales.',
+            days5Title: 'Tour de 5 Días en Tanzania', days5Desc: 'Lo más destacado de un safari equilibrado explorando Tarangire, el Cráter del Ngorongoro y el Lago Manyara.',
+            days6ExpTitle: 'Expedición de Safari de 6 Días por el Norte de Tanzania', days6ExpDesc: 'Sumérjase en el Circuito Norte clásico que incluye extensos safaris en el Serengeti.',
+            days6WildTitle: 'Aventuras de Vida Silvestre de 6 Días en Tanzania', days6WildDesc: 'Seguimiento enfocado de vida silvestre en los puntos clave de los Cinco Grandes.',
+            standardTier: 'Nivel Estándar', midTier: 'Nivel Gama Media', luxuryTier: 'Nivel Lujo',
+            accTitle: 'Campamentos y Lodges de Safari', accDesc: 'Seleccione un destino a continuación para explorar alojamientos verificados.',
+            aboutTitle: 'Acerca de PameTours', aboutDesc: 'Con sede en Arusha, Tanzania, PameTours es un operador turístico indígena líder dedicado a crear safaris inolvidables.',
+            contactTitle: 'Póngase en Contacto con Expertos en Safari', contactDesc: '¿Tiene preguntas sobre itinerarios, rutas personalizadas o reservas directas? Contáctenos.'
+          },
+          de: {
+            home: 'Startseite', packages: 'Pakete', accommodation: 'Unterkunft', about: 'Über Uns', contact: 'Kontakt',
+            pay: 'Zahlen / Kaution', ai: 'KI-Assistent', heroTag: 'Ihre Reise Beginnt Hier', heroTitle: 'Unvergessliche Wildtier-Expeditionen & Safaris',
+            heroDesc: 'Erleben Sie Tanzanias atemberaubende Landschaften, Kultur und Tierwelt.',
+            explorePkgs: 'Alle 4 Pakete', getQuote: 'Kostenloses Angebot', viewDetails: 'Details Anzeigen', whatsapp: 'WhatsApp',
+            pricingTitle: 'Preise & Safari-Pläne', pricingDesc: 'Transparente Preise pro Person je nach Unterkunftskategorie.',
+            bookNow: 'Jetzt Buchen', safariKeywords: ['safari', 'tour', 'tansania', 'preis', 'kosten', 'serengeti', 'ngorongoro', 'tarangire', 'hotel', 'buchen', 'reise', 'tiere'],
+            pkgHeaderTitle: 'Unsere Tansania Safari-Pakete', pkgHeaderDesc: 'Wählen Sie aus 4 maßgeschneiderten Reiserouten mit Standard-, Mittelklasse- und Luxusunterkünften.',
+            days4Title: '4 Tage Tansania Safari Kultur & Expedition', days4Desc: 'Kombinieren Sie Pirschfahrten im Nationalpark mit authentischem Kulturaustausch.',
+            days5Title: '5 Tage Tour in Tansania', days5Desc: 'Ein ausgewogenes Safari-Highlight mit Tarangire, Ngorongoro und Lake Manyara.',
+            days6ExpTitle: '6 Tage Nord-Tansania Safari-Expedition', days6ExpDesc: 'Tauchen Sie tief in den klassischen Nord-Circuit ein.',
+            days6WildTitle: '6 Tage Tansania Wildtier-Abenteuer', days6WildDesc: 'Gezielte Wildtierbeobachtung in den Hotspots der Big Five.',
+            standardTier: 'Standard-Stufe', midTier: 'Mittelklasse-Stufe', luxuryTier: 'Luxus-Stufe',
+            accTitle: 'Safari-Camps & Lodges', accDesc: 'Wählen Sie unten ein Reiseziel aus, um geprüfte Unterkünfte zu erkunden.',
+            aboutTitle: 'Über PameTours', aboutDesc: 'Mit Sitz in Arusha, Tansania, ist PameTours ein erstklassiger Reiseveranstalter für unvergessliche Safaris.',
+            contactTitle: 'Kontaktieren Sie Safari-Experten', contactDesc: 'Haben Sie Fragen zu Reiserouten oder Buchungen? Unser Team in Arusha hilft gerne.'
+          },
+          it: {
+            home: 'Home', packages: 'Pacchetti', accommodation: 'Alloggi', about: 'Chi Siamo', contact: 'Contatti',
+            pay: 'Paga / Deposito', ai: 'Assistente AI', heroTag: 'Il Tuo Viaggio Inizia Qui', heroTitle: 'Incredibili Spedizioni Safari e Natura Incontaminata',
+            heroDesc: 'Vivi i paesaggi maestosi, la cultura e la fauna selvatica della Tanzania.',
+            explorePkgs: 'Esplora i Pacchetti', getQuote: 'Preventivo Gratuito', viewDetails: 'Dettagli', whatsapp: 'WhatsApp',
+            pricingTitle: 'Prezzi e Piani Safari', pricingDesc: 'Prezzi trasparenti per persona in base al livello di alloggio.',
+            bookNow: 'Prenota Ora', safariKeywords: ['safari', 'tour', 'tanzania', 'prezzo', 'costo', 'serengeti', 'ngorongoro', 'tarangire', 'hotel', 'prenota', 'viaggio', 'animali'],
+            pkgHeaderTitle: 'I Nostri Pacchetti Safari in Tanzania', pkgHeaderDesc: 'Scegli tra 4 itinerari su misura con opzioni di alloggio Standard, Gamma Media e Lusso.',
+            days4Title: 'Safari Culturale e Spedizione di 4 Giorni in Tanzania', days4Desc: 'Combina emozionanti game drive con un\'autentica immersione culturale.',
+            days5Title: 'Tour di 5 Giorni in Tanzania', days5Desc: 'Un safari equilibrato che esplora Tarangire, il Cratere di Ngorongoro e il Lago Manyara.',
+            days6ExpTitle: 'Spedizione Safari nel Nord della Tanzania di 6 Giorni', days6ExpDesc: 'Immergiti nel circuito settentrionale classico.',
+            days6WildTitle: 'Avventure nella Fauna Selvatica della Tanzania di 6 Giorni', days6WildDesc: 'Monitoraggio mirato della fauna selvatica nei punti caldi dei Big Five.',
+            standardTier: 'Livello Standard', midTier: 'Livello Gamma Media', luxuryTier: 'Livello Lusso',
+            accTitle: 'Campi Safari e Lodge', accDesc: 'Seleziona una destinazione sottostante per esplorare alloggi verificati.',
+            aboutTitle: 'Informazioni su PameTours', aboutDesc: 'Con sede ad Arusha, in Tanzania, PameTours è un operatore turistico locale leader.',
+            contactTitle: 'Mettiti in Contatto con gli Esperti Safari', contactDesc: 'Hai domande su itinerari o prenotazioni? Contatta il nostro team ad Arusha.'
+          },
+          zh: {
+            home: '首页', packages: '套餐', accommodation: '住宿', about: '关于我们', contact: '联系我们',
+            pay: '支付/押金', ai: 'AI助手', heroTag: '您的旅程从这里开始', heroTitle: '难忘的野生动物考察与游猎之旅',
+            heroDesc: '在定制的标准、中端和奢华游猎行程中体验坦桑尼亚雄伟的自然风光和野生动物。',
+            explorePkgs: '探索所有4个套餐', getQuote: '获取免费报价', viewDetails: '查看详情', whatsapp: 'WhatsApp',
+            pricingTitle: '游猎价格与计划', pricingDesc: '基于住宿等级和人数的透明人均价格。',
+            bookNow: '立即预订', safariKeywords: ['safari', '游猎', '坦桑尼亚', '价格', '费用', '塞伦盖蒂', '酒店', '预订', '旅行', '动物', '狮子'],
+            pkgHeaderTitle: '我们的坦桑尼亚游猎套餐', pkgHeaderDesc: '从4个包含标准、中端和奢华住宿选项的定制行程中进行选择。',
+            days4Title: '坦桑尼亚4天游猎文化与考察之旅', days4Desc: '将国家公园游猎与当地部落的纯正文化体验相结合。',
+            days5Title: '坦桑尼亚5日游', days5Desc: '探索塔兰吉雷、恩戈罗恩戈罗火山口和曼雅拉湖的平衡游猎亮点。',
+            days6ExpTitle: '坦桑尼亚北部6天游猎考察', days6ExpDesc: '深入经典的北部环线，包括丰富的塞伦盖蒂游猎。',
+            days6WildTitle: '坦桑尼亚6天野生动物冒险', days6WildDesc: '使用专业游猎车辆在五大动物热点地区进行专注追踪。',
+            standardTier: '标准层级', midTier: '中端层级', luxuryTier: '奢华层级',
+            accTitle: '游猎营地与山林小屋', accDesc: '选择下方目的地，探索标准、中端和奢华层级验证过的住宿。',
+            aboutTitle: '关于 PameTours', aboutDesc: 'PameTours 总部位于坦桑尼亚阿鲁沙，是一家本土顶尖旅游运营商。',
+            contactTitle: '与游猎专家取得联系', contactDesc: '对行程、定制路线或直接预订有疑问？请联系我们的阿鲁沙团队。'
+          },
+          fr: {
+            home: 'Accueil', packages: 'Forfaits', accommodation: 'Hébergement', about: 'À Propos', contact: 'Contact',
+            pay: 'Payer / Dépôt', ai: 'Assistant IA', heroTag: 'Votre Voyage Commence Ici', heroTitle: 'Expéditions Inoubliables de la Vie Sauvage et Safaris',
+            heroDesc: 'Découvrez les paysages majestueux, la culture et la faune de la Tanzanie.',
+            explorePkgs: 'Explorer Les Forfaits', getQuote: 'Devis Gratuit', viewDetails: 'Voir Détails', whatsapp: 'WhatsApp',
+            pricingTitle: 'Tarifs et Plans de Safari', pricingDesc: 'Options de prix transparentes par personne selon la catégorie d\'hébergement.',
+            bookNow: 'Réserver Maintenant', safariKeywords: ['safari', 'tour', 'tanzanie', 'prix', 'coût', 'serengeti', 'ngorongoro', 'tarangire', 'hôtel', 'réserver', 'voyage', 'animaux'],
+            pkgHeaderTitle: 'Nos Forfaits Safari en Tanzanie', pkgHeaderDesc: 'Choisissez parmi 4 itinéraires sur mesure comprenant des options d\'hébergement Standard, Milieu de Gamme et Luxe.',
+            days4Title: 'Safari Culturel et Expédition de 4 Jours en Tanzanie', days4Desc: 'Combinez des safaris animaliers avec une immersion culturelle authentique.',
+            days5Title: 'Circuit de 5 Jours en Tanzanie', days5Desc: 'Un safari équilibré explorant Tarangire, le Cratère du Ngorongoro et le Lac Manyara.',
+            days6ExpTitle: 'Expédition Safari de 6 Jours dans le Nord de la Tanzanie', days6ExpDesc: 'Plongez au cœur du circuit nord classique.',
+            days6WildTitle: 'Aventures Animalières de 6 Jours en Tanzanie', days6WildDesc: 'Suivi ciblé de la faune à travers les habitats des Big Five.',
+            standardTier: 'Niveau Standard', midTier: 'Niveau Milieu de Gamme', luxuryTier: 'Niveau Luxe',
+            accTitle: 'Camps de Safari et Lodges', accDesc: 'Sélectionnez une destination ci-dessous pour explorer les hébergements vérifiés.',
+            aboutTitle: 'À Propos de PameTours', aboutDesc: 'Basé à Arusha, en Tanzanie, PameTours est un tour-opérateur local de premier plan.',
+            contactTitle: 'Contactez les Experts du Safari', contactDesc: 'Vous avez des questions sur les itinéraires ou les réservations ? Contactez notre équipe.'
+          }
+        },
+        chatMessages: [],
+        init() {
+          this.resetChat();
+        },
+        resetChat() {
+          const greetings = {
+            en: 'Jambo! I am your PameTours AI Assistant. How can I help you plan your Tanzanian safari today?',
+            es: '¡Jambo! Soy tu asistente de IA de PameTours. ¿Cómo puedo ayudarte a planificar tu safari hoy?',
+            de: 'Jambo! Ich bin Ihr PameTours KI-Assistent. Wie kann ich Ihnen bei der Planung Ihrer Safari helfen?',
+            it: 'Jambo! Sono il tuo Assistente AI PameTours. Come posso aiutarti a pianificare il tuo safari oggi?',
+            zh: 'Jambo！我是您的 PameTours AI 助手。今天我能如何帮助您规划坦桑尼亚游猎之旅？',
+            fr: 'Jambo ! Je suis votre assistant IA PameTours. Comment puis-je vous aider à planifier votre safari aujourd\'hui ?'
+          };
+          this.chatMessages = [{ sender: 'ai', text: greetings[this.currentLang] }];
+        },
         sendMessage(msg = null) {
           const textToSend = msg || this.userMessage;
           if (!textToSend.trim()) return;
@@ -65,47 +201,80 @@
           });
 
           setTimeout(() => {
-            let reply = 'Thank you for asking! We offer tailored itineraries covering Tarangire, Serengeti, Ngorongoro, and Lake Manyara across Standard, Mid-Range, and Luxury tiers.';
-            if (textToSend.toLowerCase().includes('price') || textToSend.toLowerCase().includes('cost')) {
-              reply = 'Our package prices vary depending on your group size and chosen accommodation tier (Standard, Mid-Range, or Luxury). Click \'Get Free Safari Quote\' on any itinerary to receive exact pricing!';
-            } else if (textToSend.toLowerCase().includes('best time') || textToSend.toLowerCase().includes('when')) {
-              reply = 'Tanzania is a year-round destination! June to October is ideal for general game viewing and the Great Migration river crossings.';
+            const inputLower = textToSend.toLowerCase();
+            const keywords = this.t[this.currentLang].safariKeywords.concat(['safari', 'tanzania', 'price', 'cost', 'hotel', 'tour']);
+            const isIndustryRelated = keywords.some(kw => inputLower.includes(kw));
+
+            let reply = '';
+            if (!isIndustryRelated) {
+              reply = 'Out of scope';
+            } else {
+              const replies = {
+                en: 'Thank you for asking! We offer tailored safaris across Tarangire, Serengeti, and Ngorongoro. You can view full pricing in our Pricing & Plans section!',
+                es: '¡Gracias por preguntar! Ofrecemos safaris personalizados en Tarangire, Serengeti y Ngorongoro. ¡Puedes ver los precios completos en la sección de Precios!',
+                de: 'Vielen Dank für Ihre Anfrage! Wir bieten maßgeschneiderte Safaris in Tarangire, Serengeti und Ngorongoro an. Preise finden Sie im Bereich Preise & Pläne!',
+                it: 'Grazie per aver chiesto! Offriamo safari personalizzati a Tarangire, Serengeti e Ngorongoro. Puoi vedere i prezzi completi nella sezione Prezzi!',
+                zh: '感谢您的咨询！我们提供覆盖塔兰吉雷、塞伦盖蒂和恩戈罗恩戈罗的定制游猎。您可以在“价格与计划”部分查看完整价格！',
+                fr: 'Merci de demander ! Nous proposons des safaris sur mesure à Tarangire, Serengeti et Ngorongoro. Consultez la section Tarifs pour plus de détails !'
+              };
+              reply = replies[this.currentLang];
             }
+
             this.chatMessages.push({ sender: 'ai', text: reply });
             this.$nextTick(() => {
               const chatBody = document.getElementById('chat-body');
               if (chatBody) chatBody.scrollTop = chatBody.scrollHeight;
             });
-          }, 800);
+          }, 600);
         }
       }">
 
   <!-- Header Section -->
   <header class="sticky top-0 z-40 bg-brand-green text-white shadow-lg border-b border-brand-gold/20 w-full shrink-0">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="max-w-[95%] mx-auto px-4 py-4 flex justify-between items-center">
       
       <!-- LOGO AREA -->
       <div class="flex items-center space-x-3 cursor-pointer" @click="activePage = 'home'">
-        <img src="https://i.imgur.com/FGFJLQV.png" alt="PameTours Logo" class="w-10 h-10 rounded-full object-cover border border-brand-gold/40 shadow-sm">
-        <span class="text-2xl font-bold tracking-wider">PAME <span class="text-brand-gold">TOURS</span></span>
+        <img src="https://i.imgur.com/FGFJLQV.png" alt="PameTours Logo" class="w-12 h-12 rounded-full object-cover border border-brand-gold/40 shadow-sm">
+        <span class="text-3xl font-bold tracking-wider">PAME <span class="text-brand-gold">TOURS</span></span>
       </div>
 
       <!-- Navigation Links -->
-      <nav class="hidden md:flex space-x-8 text-sm font-semibold uppercase tracking-wider">
-        <button @click="activePage = 'home'" :class="activePage === 'home' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'">Home</button>
-        <button @click="activePage = 'packages'" :class="activePage === 'packages' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'">Packages</button>
-        <button @click="activePage = 'accommodation'" :class="activePage === 'accommodation' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'">Accommodation</button>
-        <button @click="activePage = 'about'" :class="activePage === 'about' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'">About Us</button>
-        <button @click="activePage = 'contact'" :class="activePage === 'contact' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'">Contact Us</button>
+      <nav class="hidden md:flex space-x-8 text-base font-semibold uppercase tracking-wider">
+        <button @click="activePage = 'home'" :class="activePage === 'home' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'" x-text="t[currentLang].home"></button>
+        <button @click="activePage = 'packages'" :class="activePage === 'packages' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'" x-text="t[currentLang].packages"></button>
+        <button @click="activePage = 'accommodation'" :class="activePage === 'accommodation' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'" x-text="t[currentLang].accommodation"></button>
+        <button @click="activePage = 'about'" :class="activePage === 'about' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'" x-text="t[currentLang].about"></button>
+        <button @click="activePage = 'contact'" :class="activePage === 'contact' ? 'text-brand-gold border-b-2 border-brand-gold pb-1' : 'hover:text-brand-gold transition-colors'" x-text="t[currentLang].contact"></button>
       </nav>
 
-      <div class="hidden sm:flex items-center gap-3">
-        <button @click="paymentModalOpen = true" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-full font-medium transition-all border border-white/20 text-xs">
-          <i data-lucide="credit-card" class="w-4 h-4 text-brand-gold"></i> Pay / Deposit
-        </button>
-        <button @click="chatOpen = true" class="flex items-center gap-2 bg-brand-gold hover:bg-yellow-500 text-brand-dark px-4 py-2 rounded-full font-semibold transition-all shadow-md text-sm">
-          <i data-lucide="bot" class="w-4 h-4"></i> AI Assistant
-        </button>
+      <!-- Language Selector & Actions -->
+      <div class="flex items-center gap-4">
+        <!-- Language Selector Dropdown with Flags -->
+        <div class="relative" x-data="{ openLang: false }">
+          <button @click="openLang = !openLang" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-3.5 py-2 rounded-full text-sm font-semibold border border-white/20 transition-all">
+            <span class="text-lg" x-text="languages.find(l => l.code === currentLang).flag"></span>
+            <span x-text="currentLang.toUpperCase()"></span>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-brand-gold"></i>
+          </button>
+          <div x-show="openLang" @click.outside="openLang = false" class="absolute right-0 mt-2 w-44 bg-white text-gray-800 rounded-xl shadow-xl border border-gray-100 py-2 z-50 text-sm">
+            <template x-for="lang in languages" :key="lang.code">
+              <button @click="currentLang = lang.code; resetChat(); openLang = false" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-brand-sand transition-colors font-medium">
+                <span class="text-lg" x-text="lang.flag"></span>
+                <span x-text="lang.name"></span>
+              </button>
+            </template>
+          </div>
+        </div>
+
+        <div class="hidden sm:flex items-center gap-3">
+          <button @click="paymentModalOpen = true" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-full font-medium transition-all border border-white/20 text-sm">
+            <i data-lucide="credit-card" class="w-4 h-4 text-brand-gold"></i> <span x-text="t[currentLang].pay"></span>
+          </button>
+          <button @click="chatOpen = true" class="flex items-center gap-2 bg-brand-gold hover:bg-yellow-500 text-brand-dark px-5 py-2.5 rounded-full font-semibold transition-all shadow-md text-base">
+            <i data-lucide="bot" class="w-5 h-5"></i> <span x-text="t[currentLang].ai"></span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -116,7 +285,7 @@
     <!-- HOME PAGE -->
     <section x-show="activePage === 'home'" x-transition class="w-full">
       <!-- Hero Banner -->
-      <div class="relative h-[80vh] min-h-[500px] w-full overflow-hidden bg-brand-dark flex items-center justify-center">
+      <div class="relative h-[85vh] min-h-[550px] w-full overflow-hidden bg-brand-dark flex items-center justify-center">
         <div class="swiper heroSlider absolute inset-0 h-full w-full">
           <div class="swiper-wrapper">
             <div class="swiper-slide relative">
@@ -130,626 +299,798 @@
           </div>
         </div>
 
-        <div class="relative z-10 text-center px-6 text-white max-w-4xl">
-          <span class="inline-block px-4 py-1.5 mb-4 text-xs uppercase tracking-widest font-semibold bg-brand-gold/20 text-brand-gold border border-brand-gold/40 rounded-full">
-            Your Journey Begins Here
+        <div class="relative z-10 text-center px-6 text-white max-w-5xl">
+          <span class="inline-block px-5 py-2 mb-6 text-sm uppercase tracking-widest font-semibold bg-brand-gold/20 text-brand-gold border border-brand-gold/40 rounded-full" x-text="t[currentLang].heroTag">
           </span>
-          <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6">
-            Unforgettable Wildlife Expeditions & Safari Adventures
+          <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6" x-text="t[currentLang].heroTitle">
           </h1>
-          <p class="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8">
-            Experience Tanzania’s majestic landscapes, culture, and wildlife across customized Standard, Mid-range, and Luxury safaris.
+          <p class="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto mb-10 leading-relaxed" x-text="t[currentLang].heroDesc">
           </p>
-          <div class="flex flex-wrap justify-center gap-4">
-            <button @click="activePage = 'packages'" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold px-8 py-3.5 rounded-full shadow-lg transition-all">
-              Explore All 4 Packages
+          <div class="flex flex-wrap justify-center gap-5">
+            <button @click="activePage = 'packages'" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold px-9 py-4 rounded-full shadow-lg transition-all text-lg" x-text="t[currentLang].explorePkgs">
             </button>
-            <button @click="modalOpen = true" class="border border-white/40 hover:border-brand-gold hover:text-brand-gold text-white font-semibold px-8 py-3.5 rounded-full transition-all">
-              Get Free Safari Quote
+            <button @click="modalOpen = true" class="border border-white/40 hover:border-brand-gold hover:text-brand-gold text-white font-semibold px-9 py-4 rounded-full transition-all text-lg" x-text="t[currentLang].getQuote">
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Packages Grid -->
-      <div class="py-20 max-w-7xl mx-auto px-6">
+      <!-- Packages Grid Preview on Home -->
+      <div class="py-24 max-w-[92%] mx-auto px-4">
         <div class="text-center mb-16">
-          <h2 class="text-3xl font-bold text-brand-green mb-3">Our Tanzania Safari Packages</h2>
-          <div class="w-16 h-1 bg-brand-gold mx-auto mb-4"></div>
-          <p class="text-gray-600 max-w-xl mx-auto">Choose from 4 tailored itineraries featuring Standard, Mid-Range, and Luxury accommodation options.</p>
+          <h2 class="text-4xl font-bold text-brand-green mb-4" x-text="t[currentLang].pkgHeaderTitle"></h2>
+          <div class="w-20 h-1.5 bg-brand-gold mx-auto mb-5"></div>
+          <p class="text-gray-600 max-w-2xl mx-auto text-lg" x-text="t[currentLang].pkgHeaderDesc"></p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
           
           <!-- Package 1 -->
-          <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 flex flex-col">
-            <div class="h-64 relative">
+          <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+            <div class="h-72 relative">
               <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
-              <span class="absolute top-4 right-4 bg-brand-green text-brand-gold text-xs font-bold px-3 py-1 rounded-full">4 Days</span>
+              <span class="absolute top-4 right-4 bg-brand-green text-brand-gold text-sm font-bold px-4 py-1.5 rounded-full">4 Days</span>
             </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
+            <div class="p-8 flex-1 flex flex-col justify-between">
               <div>
-                <h3 class="text-2xl font-bold text-brand-green mb-2">4 Days Tanzania Safari Cultural & Expedition</h3>
-                <p class="text-gray-600 text-sm mb-4">Combine iconic national park game drives with authentic cultural immersion with local tribes.</p>
-                <div class="flex gap-2 my-3">
-                  <span class="text-xs bg-gray-100 text-gray-700 font-semibold px-2.5 py-1 rounded">Standard</span>
-                  <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-1 rounded">Mid-Range</span>
-                  <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded">Luxury</span>
+                <h3 class="text-2xl font-bold text-brand-green mb-3" x-text="t[currentLang].days4Title"></h3>
+                <p class="text-gray-600 text-base mb-6" x-text="t[currentLang].days4Desc"></p>
+                <div class="flex gap-2.5 my-4">
+                  <span class="text-sm bg-gray-100 text-gray-700 font-semibold px-3 py-1 rounded" x-text="t[currentLang].standardTier"></span>
+                  <span class="text-sm bg-amber-100 text-amber-800 font-semibold px-3 py-1 rounded" x-text="t[currentLang].midTier"></span>
+                  <span class="text-sm bg-emerald-100 text-emerald-800 font-semibold px-3 py-1 rounded" x-text="t[currentLang].luxuryTier"></span>
                 </div>
               </div>
-              <div class="border-t pt-4 grid grid-cols-3 gap-2">
-                <button @click="activePage = 'packages'" class="bg-brand-green text-white text-xs font-bold py-2 rounded-lg">View Details</button>
-                <button @click="modalOpen = true" class="bg-brand-gold text-brand-dark text-xs font-bold py-2 rounded-lg">Get Quote</button>
-                <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 text-white text-xs font-bold py-2 rounded-lg text-center leading-relaxed">WhatsApp</a>
+              <div class="border-t pt-5 grid grid-cols-3 gap-3">
+                <button @click="activePage = 'packages'" class="bg-brand-green text-white text-sm font-bold py-3 rounded-xl" x-text="t[currentLang].viewDetails"></button>
+                <button @click="modalOpen = true" class="bg-brand-gold text-brand-dark text-sm font-bold py-3 rounded-xl" x-text="t[currentLang].getQuote"></button>
+                <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 text-white text-sm font-bold py-3 rounded-xl text-center flex items-center justify-center" x-text="t[currentLang].whatsapp"></a>
               </div>
             </div>
           </div>
 
           <!-- Package 2 -->
-          <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 flex flex-col">
-            <div class="h-64 relative">
+          <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+            <div class="h-72 relative">
               <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
-              <span class="absolute top-4 right-4 bg-brand-green text-brand-gold text-xs font-bold px-3 py-1 rounded-full">5 Days</span>
+              <span class="absolute top-4 right-4 bg-brand-green text-brand-gold text-sm font-bold px-4 py-1.5 rounded-full">5 Days</span>
             </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
+            <div class="p-8 flex-1 flex flex-col justify-between">
               <div>
-                <h3 class="text-2xl font-bold text-brand-green mb-2">5 Days Tour in Tanzania</h3>
-                <p class="text-gray-600 text-sm mb-4">A balanced safari highlight exploring Tarangire, Ngorongoro Crater, and Lake Manyara.</p>
-                <div class="flex gap-2 my-3">
-                  <span class="text-xs bg-gray-100 text-gray-700 font-semibold px-2.5 py-1 rounded">Standard</span>
-                  <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-1 rounded">Mid-Range</span>
-                  <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded">Luxury</span>
+                <h3 class="text-2xl font-bold text-brand-green mb-3" x-text="t[currentLang].days5Title"></h3>
+                <p class="text-gray-600 text-base mb-6" x-text="t[currentLang].days5Desc"></p>
+                <div class="flex gap-2.5 my-4">
+                  <span class="text-sm bg-gray-100 text-gray-700 font-semibold px-3 py-1 rounded" x-text="t[currentLang].standardTier"></span>
+                  <span class="text-sm bg-amber-100 text-amber-800 font-semibold px-3 py-1 rounded" x-text="t[currentLang].midTier"></span>
+                  <span class="text-sm bg-emerald-100 text-emerald-800 font-semibold px-3 py-1 rounded" x-text="t[currentLang].luxuryTier"></span>
                 </div>
               </div>
-              <div class="border-t pt-4 grid grid-cols-3 gap-2">
-                <button @click="activePage = 'packages'" class="bg-brand-green text-white text-xs font-bold py-2 rounded-lg">View Details</button>
-                <button @click="modalOpen = true" class="bg-brand-gold text-brand-dark text-xs font-bold py-2 rounded-lg">Get Quote</button>
-                <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 text-white text-xs font-bold py-2 rounded-lg text-center leading-relaxed">WhatsApp</a>
+              <div class="border-t pt-5 grid grid-cols-3 gap-3">
+                <button @click="activePage = 'packages'" class="bg-brand-green text-white text-sm font-bold py-3 rounded-xl" x-text="t[currentLang].viewDetails"></button>
+                <button @click="modalOpen = true" class="bg-brand-gold text-brand-dark text-sm font-bold py-3 rounded-xl" x-text="t[currentLang].getQuote"></button>
+                <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 text-white text-sm font-bold py-3 rounded-xl text-center flex items-center justify-center" x-text="t[currentLang].whatsapp"></a>
               </div>
             </div>
           </div>
 
           <!-- Package 3 -->
-          <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 flex flex-col">
-            <div class="h-64 relative">
+          <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+            <div class="h-72 relative">
               <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
-              <span class="absolute top-4 right-4 bg-brand-green text-brand-gold text-xs font-bold px-3 py-1 rounded-full">6 Days</span>
+              <span class="absolute top-4 right-4 bg-brand-green text-brand-gold text-sm font-bold px-4 py-1.5 rounded-full">6 Days</span>
             </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
+            <div class="p-8 flex-1 flex flex-col justify-between">
               <div>
-                <h3 class="text-2xl font-bold text-brand-green mb-2">6 Days Northern Tanzania Safari Expedition</h3>
-                <p class="text-gray-600 text-sm mb-4">Deep dive into the classic Northern Circuit including extensive Serengeti game drives.</p>
-                <div class="flex gap-2 my-3">
-                  <span class="text-xs bg-gray-100 text-gray-700 font-semibold px-2.5 py-1 rounded">Standard</span>
-                  <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-1 rounded">Mid-Range</span>
-                  <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded">Luxury</span>
+                <h3 class="text-2xl font-bold text-brand-green mb-3" x-text="t[currentLang].days6ExpTitle"></h3>
+                <p class="text-gray-600 text-base mb-6" x-text="t[currentLang].days6ExpDesc"></p>
+                <div class="flex gap-2.5 my-4">
+                  <span class="text-sm bg-gray-100 text-gray-700 font-semibold px-3 py-1 rounded" x-text="t[currentLang].standardTier"></span>
+                  <span class="text-sm bg-amber-100 text-amber-800 font-semibold px-3 py-1 rounded" x-text="t[currentLang].midTier"></span>
+                  <span class="text-sm bg-emerald-100 text-emerald-800 font-semibold px-3 py-1 rounded" x-text="t[currentLang].luxuryTier"></span>
                 </div>
               </div>
-              <div class="border-t pt-4 grid grid-cols-3 gap-2">
-                <button @click="activePage = 'packages'" class="bg-brand-green text-white text-xs font-bold py-2 rounded-lg">View Details</button>
-                <button @click="modalOpen = true" class="bg-brand-gold text-brand-dark text-xs font-bold py-2 rounded-lg">Get Quote</button>
-                <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 text-white text-xs font-bold py-2 rounded-lg text-center leading-relaxed">WhatsApp</a>
+              <div class="border-t pt-5 grid grid-cols-3 gap-3">
+                <button @click="activePage = 'packages'" class="bg-brand-green text-white text-sm font-bold py-3 rounded-xl" x-text="t[currentLang].viewDetails"></button>
+                <button @click="modalOpen = true" class="bg-brand-gold text-brand-dark text-sm font-bold py-3 rounded-xl" x-text="t[currentLang].getQuote"></button>
+                <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 text-white text-sm font-bold py-3 rounded-xl text-center flex items-center justify-center" x-text="t[currentLang].whatsapp"></a>
               </div>
             </div>
           </div>
 
           <!-- Package 4 -->
-          <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 flex flex-col">
-            <div class="h-64 relative">
+          <div class="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+            <div class="h-72 relative">
               <img src="https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
-              <span class="absolute top-4 right-4 bg-brand-green text-brand-gold text-xs font-bold px-3 py-1 rounded-full">6 Days</span>
+              <span class="absolute top-4 right-4 bg-brand-green text-brand-gold text-sm font-bold px-4 py-1.5 rounded-full">6 Days</span>
             </div>
-            <div class="p-6 flex-1 flex flex-col justify-between">
+            <div class="p-8 flex-1 flex flex-col justify-between">
               <div>
-                <h3 class="text-2xl font-bold text-brand-green mb-2">6 Days Tanzania Wildlife Adventures</h3>
-                <p class="text-gray-600 text-sm mb-4">Focused wildlife tracking across Big Five hot spots with specialized safari vehicles.</p>
-                <div class="flex gap-2 my-3">
-                  <span class="text-xs bg-gray-100 text-gray-700 font-semibold px-2.5 py-1 rounded">Standard</span>
-                  <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2.5 py-1 rounded">Mid-Range</span>
-                  <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded">Luxury</span>
+                <h3 class="text-2xl font-bold text-brand-green mb-3" x-text="t[currentLang].days6WildTitle"></h3>
+                <p class="text-gray-600 text-base mb-6" x-text="t[currentLang].days6WildDesc"></p>
+                <div class="flex gap-2.5 my-4">
+                  <span class="text-sm bg-gray-100 text-gray-700 font-semibold px-3 py-1 rounded" x-text="t[currentLang].standardTier"></span>
+                  <span class="text-sm bg-amber-100 text-amber-800 font-semibold px-3 py-1 rounded" x-text="t[currentLang].midTier"></span>
+                  <span class="text-sm bg-emerald-100 text-emerald-800 font-semibold px-3 py-1 rounded" x-text="t[currentLang].luxuryTier"></span>
                 </div>
               </div>
-              <div class="border-t pt-4 grid grid-cols-3 gap-2">
-                <button @click="activePage = 'packages'" class="bg-brand-green text-white text-xs font-bold py-2 rounded-lg">View Details</button>
-                <button @click="modalOpen = true" class="bg-brand-gold text-brand-dark text-xs font-bold py-2 rounded-lg">Get Quote</button>
-                <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 text-white text-xs font-bold py-2 rounded-lg text-center leading-relaxed">WhatsApp</a>
+              <div class="border-t pt-5 grid grid-cols-3 gap-3">
+                <button @click="activePage = 'packages'" class="bg-brand-green text-white text-sm font-bold py-3 rounded-xl" x-text="t[currentLang].viewDetails"></button>
+                <button @click="modalOpen = true" class="bg-brand-gold text-brand-dark text-sm font-bold py-3 rounded-xl" x-text="t[currentLang].getQuote"></button>
+                <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 text-white text-sm font-bold py-3 rounded-xl text-center flex items-center justify-center" x-text="t[currentLang].whatsapp"></a>
               </div>
             </div>
           </div>
 
         </div>
       </div>
+
+      <!-- PRICING & PLAN SECTION -->
+      <section class="relative py-24 px-6 overflow-hidden bg-brand-dark">
+        <div class="absolute inset-0 bg-cover bg-center opacity-25" style="background-image: url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1920&q=80')"></div>
+
+        <div class="absolute left-10 top-1/4 opacity-30 pointer-events-none animate-wildlife">
+          <i data-lucide="paw-print" class="w-32 h-32 text-brand-gold"></i>
+        </div>
+        <div class="absolute right-12 bottom-1/4 opacity-30 pointer-events-none animate-wildlife" style="animation-delay: 2s;">
+          <i data-lucide="compass" class="w-36 h-36 text-brand-gold"></i>
+        </div>
+
+        <div class="relative z-10 max-w-[92%] mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4" x-text="t[currentLang].pricingTitle"></h2>
+            <div class="w-24 h-1.5 bg-brand-gold mx-auto mb-5"></div>
+            <p class="text-gray-200 max-w-3xl mx-auto text-lg leading-relaxed" x-text="t[currentLang].pricingDesc"></p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Standard Plan -->
+            <div class="bg-white/95 backdrop-blur rounded-3xl p-10 border border-gray-200 shadow-2xl flex flex-col justify-between hover:border-brand-gold transition-all">
+              <div>
+                <div class="inline-block bg-gray-100 text-gray-800 text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-5" x-text="t[currentLang].standardTier"></div>
+                <h3 class="text-3xl font-bold text-brand-green mb-3">Budget Wilderness</h3>
+                <p class="text-sm text-gray-600 mb-8">Authentic public campsite & entry-level tented stays.</p>
+                <div class="text-4xl font-extrabold text-brand-green mb-8">$350 <span class="text-sm font-normal text-gray-500">/ person / day</span></div>
+                <ul class="space-y-4 text-sm text-gray-700 mb-10">
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> 4x4 Land Cruiser Game Drives</li>
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> Private Safari Chef Meals</li>
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> All Park Fees & Taxes</li>
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> Public Campsite Accommodations</li>
+                </ul>
+              </div>
+              <button @click="modalOpen = true" class="w-full bg-brand-green text-white font-bold py-4 rounded-2xl hover:bg-brand-dark transition-all text-sm uppercase tracking-wider shadow-md" x-text="t[currentLang].bookNow"></button>
+            </div>
+
+            <!-- Mid-Range Plan -->
+            <div class="bg-white rounded-3xl p-10 border-4 border-brand-gold shadow-2xl flex flex-col justify-between relative transform md:-translate-y-4">
+              <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-gold text-brand-dark text-xs font-extrabold uppercase px-6 py-1.5 rounded-full tracking-wider shadow-lg">Most Popular</div>
+              <div>
+                <div class="inline-block bg-amber-100 text-amber-800 text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-5" x-text="t[currentLang].midTier"></div>
+                <h3 class="text-3xl font-bold text-brand-green mb-3">Comfort Safari</h3>
+                <p class="text-sm text-gray-600 mb-8">Walk-in canvas tented lodges & en-suite rooms.</p>
+                <div class="text-4xl font-extrabold text-brand-green mb-8">$520 <span class="text-sm font-normal text-gray-500">/ person / day</span></div>
+                <ul class="space-y-4 text-sm text-gray-700 mb-10">
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> 4x4 Pop-Top Safari Vehicle</li>
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> En-suite Tented Lodge Stays</li>
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> Full Board Buffet Meals & Wi-Fi</li>
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> Unlimited Airport Transfers</li>
+                </ul>
+              </div>
+              <button @click="modalOpen = true" class="w-full bg-brand-gold text-brand-dark font-extrabold py-4 rounded-2xl hover:bg-yellow-500 transition-all text-sm uppercase tracking-wider shadow-xl" x-text="t[currentLang].bookNow"></button>
+            </div>
+
+            <!-- Luxury Plan -->
+            <div class="bg-white/95 backdrop-blur rounded-3xl p-10 border border-gray-200 shadow-2xl flex flex-col justify-between hover:border-brand-gold transition-all">
+              <div>
+                <div class="inline-block bg-emerald-100 text-emerald-800 text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-5" x-text="t[currentLang].luxuryTier"></div>
+                <h3 class="text-3xl font-bold text-brand-green mb-3">5-Star Wilderness</h3>
+                <p class="text-sm text-gray-600 mb-8">World-class lodges, private butler & fine dining.</p>
+                <div class="text-4xl font-extrabold text-brand-green mb-8">$950 <span class="text-sm font-normal text-gray-500">/ person / day</span></div>
+                <ul class="space-y-4 text-sm text-gray-700 mb-10">
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> Premium Private Land Cruiser</li>
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> Luxury Lodges (Four Seasons/Treetops)</li>
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> Private Butler & Gourmet Cuisine</li>
+                  <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-gold"></i> Included Bush Dinners & Spa</li>
+                </ul>
+              </div>
+              <button @click="modalOpen = true" class="w-full bg-brand-green text-white font-bold py-4 rounded-2xl hover:bg-brand-dark transition-all text-sm uppercase tracking-wider shadow-md" x-text="t[currentLang].bookNow"></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOOK NOW & ANIMALS SECTION -->
+      <section class="py-20 bg-gradient-to-r from-brand-dark via-brand-green to-brand-dark text-white relative overflow-hidden border-y border-brand-gold/30">
+        <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1920&q=80')"></div>
+
+        <div class="absolute left-12 top-1/2 -translate-y-1/2 opacity-30 pointer-events-none animate-wildlife">
+          <i data-lucide="footprints" class="w-28 h-28 text-brand-gold"></i>
+        </div>
+        <div class="absolute right-16 top-1/3 opacity-30 pointer-events-none animate-wildlife" style="animation-delay: 2.5s;">
+          <i data-lucide="compass" class="w-32 h-32 text-brand-gold"></i>
+        </div>
+
+        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+          <span class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-brand-gold/20 text-brand-gold text-sm font-bold uppercase tracking-widest border border-brand-gold/30 mb-6 shadow">
+            <i data-lucide="sparkles" class="w-5 h-5 animate-spin"></i> Secure Your Expedition
+          </span>
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">Book Now & Experience Tanzania's Wild Wonders</h2>
+          <p class="text-gray-200 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
+            Choose your desired accommodation tier above or speak directly with our Arusha travel concierge on WhatsApp to reserve your dates.
+          </p>
+
+          <div class="flex flex-wrap items-center justify-center gap-5">
+            <button @click="modalOpen = true" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark font-extrabold px-10 py-4 rounded-full shadow-2xl transition-all flex items-center gap-3 text-base uppercase tracking-wider" x-text="t[currentLang].bookNow">
+            </button>
+            <a href="https://wa.me/255623377391?text=Hello%20PameTours!%20I'd%20like%20to%20book%20a%20safari." target="_blank" class="bg-green-600 hover:bg-green-700 text-white font-extrabold px-10 py-4 rounded-full shadow-2xl transition-all flex items-center gap-3 text-base uppercase tracking-wider" x-text="t[currentLang].whatsapp">
+            </a>
+          </div>
+        </div>
+      </section>
     </section>
 
     <!-- PACKAGES PAGE -->
-    <section x-show="activePage === 'packages'" x-transition class="py-12 max-w-7xl mx-auto px-6 space-y-8">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-extrabold text-brand-green mb-3">Complete Safari Itineraries</h1>
-        <p class="text-gray-600">All itineraries include airport reception, transfers, park accommodations, and game drives.</p>
+    <section x-show="activePage === 'packages'" x-transition class="py-16 max-w-[92%] mx-auto px-4 space-y-10">
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-brand-green mb-4" x-text="t[currentLang].pkgHeaderTitle"></h1>
+        <p class="text-gray-600 text-lg" x-text="t[currentLang].pkgHeaderDesc"></p>
       </div>
 
       <!-- Package Item 1 -->
-      <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition flex flex-col md:flex-row">
-        <div class="md:w-2/5 h-64 md:h-auto relative shrink-0">
+      <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition flex flex-col md:flex-row">
+        <div class="md:w-2/5 h-72 md:h-auto relative shrink-0">
           <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80" alt="Tarangire Elephants" class="w-full h-full object-cover" />
-          <span class="absolute top-4 left-4 bg-brand-green text-brand-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">4 Days</span>
+          <span class="absolute top-6 left-6 bg-brand-green text-brand-gold text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">4 Days</span>
         </div>
-        <div class="p-6 md:p-8 md:w-3/5 flex flex-col justify-between">
+        <div class="p-8 md:p-10 md:w-3/5 flex flex-col justify-between">
           <div>
-            <h2 class="text-2xl font-bold text-brand-green mb-2">1. 4 Days Tanzania Safari Cultural & Expedition</h2>
-            <p class="text-gray-600 text-sm mb-4">A rich combination of northern circuit game drives and traditional cultural experiences with local tribes.</p>
+            <h2 class="text-3xl font-bold text-brand-green mb-3" x-text="t[currentLang].days4Title"></h2>
+            <p class="text-gray-600 text-base mb-6" x-text="t[currentLang].days4Desc"></p>
             
-            <div class="bg-brand-sand/60 border border-brand-gold/20 rounded-xl p-4 mb-6">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-brand-green mb-2.5 flex items-center gap-1.5">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-gold"></i> Detailed Itinerary Breakdown:
+            <div class="bg-brand-sand/70 border border-brand-gold/20 rounded-2xl p-6 mb-8">
+              <h4 class="text-sm font-bold uppercase tracking-wider text-brand-green mb-3 flex items-center gap-2">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-gold"></i> Detailed Itinerary Breakdown:
               </h4>
-              <ul class="text-xs text-gray-700 space-y-2">
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 1:</strong> <span>Airport Pick-Up & Transfer to Arusha</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 2:</strong> <span>Tarangire National Park Game Drive</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 3:</strong> <span>Lake Eyasi Cultural Tour (Hadzabe & Datoga Tribes)</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 4:</strong> <span>Ngorongoro Crater Tour & Departure</span></li>
+              <ul class="text-sm text-gray-700 space-y-3">
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 1:</strong> <span>Airport Pick-Up & Transfer to Arusha</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 2:</strong> <span>Tarangire National Park Game Drive</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 3:</strong> <span>Lake Eyasi Cultural Tour (Hadzabe & Datoga Tribes)</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 4:</strong> <span>Ngorongoro Crater Tour & Departure</span></li>
               </ul>
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-3">
-            <button @click="modalOpen = true" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark px-6 py-2.5 rounded-lg font-bold text-sm shadow transition">
-              Request Quote for 4 Days
+          <div class="flex flex-wrap items-center gap-4">
+            <button @click="modalOpen = true" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark px-7 py-3.5 rounded-xl font-bold text-base shadow transition" x-text="t[currentLang].getQuote">
             </button>
-            <a href="https://wa.me/255623377391?text=Hello%20PameTours,%20I'm%20interested%20in%20the%204%20Days%20Safari%20Cultural%20%26%20Expedition." target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2 transition">
-              <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Us
+            <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3.5 rounded-xl font-bold text-base flex items-center gap-2 transition" x-text="t[currentLang].whatsapp">
             </a>
           </div>
         </div>
       </div>
 
       <!-- Package Item 2 -->
-      <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition flex flex-col md:flex-row">
-        <div class="md:w-2/5 h-64 md:h-auto relative shrink-0">
+      <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition flex flex-col md:flex-row">
+        <div class="md:w-2/5 h-72 md:h-auto relative shrink-0">
           <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80" alt="Serengeti Lions" class="w-full h-full object-cover" />
-          <span class="absolute top-4 left-4 bg-brand-green text-brand-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">5 Days</span>
+          <span class="absolute top-6 left-6 bg-brand-green text-brand-gold text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">5 Days</span>
         </div>
-        <div class="p-6 md:p-8 md:w-3/5 flex flex-col justify-between">
+        <div class="p-8 md:p-10 md:w-3/5 flex flex-col justify-between">
           <div>
-            <h2 class="text-2xl font-bold text-brand-green mb-2">2. 5 Days Tour in Tanzania</h2>
-            <p class="text-gray-600 text-sm mb-4">Explore Tanzania’s premier wildlife highlights across Tarangire, Central Serengeti, and the Ngorongoro Conservation Area.</p>
+            <h2 class="text-3xl font-bold text-brand-green mb-3" x-text="t[currentLang].days5Title"></h2>
+            <p class="text-gray-600 text-base mb-6" x-text="t[currentLang].days5Desc"></p>
             
-            <div class="bg-brand-sand/60 border border-brand-gold/20 rounded-xl p-4 mb-6">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-brand-green mb-2.5 flex items-center gap-1.5">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-gold"></i> Detailed Itinerary Breakdown:
+            <div class="bg-brand-sand/70 border border-brand-gold/20 rounded-2xl p-6 mb-8">
+              <h4 class="text-sm font-bold uppercase tracking-wider text-brand-green mb-3 flex items-center gap-2">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-gold"></i> Detailed Itinerary Breakdown:
               </h4>
-              <ul class="text-xs text-gray-700 space-y-2">
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 1:</strong> <span>Arrival & Hotel Check-in</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 2:</strong> <span>Tarangire Game Drive</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 3:</strong> <span>Serengeti Transit & Afternoon Game Safari</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 4:</strong> <span>Ngorongoro Crater Exploration</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 5:</strong> <span>Lake Manyara & Drop-off</span></li>
+              <ul class="text-sm text-gray-700 space-y-3">
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 1:</strong> <span>Arrival & Hotel Check-in</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 2:</strong> <span>Tarangire Game Drive</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 3:</strong> <span>Serengeti Transit & Afternoon Game Safari</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 4:</strong> <span>Ngorongoro Crater Exploration</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 5:</strong> <span>Lake Manyara & Drop-off</span></li>
               </ul>
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-3">
-            <button @click="modalOpen = true" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark px-6 py-2.5 rounded-lg font-bold text-sm shadow transition">
-              Request Quote for 5 Days
+          <div class="flex flex-wrap items-center gap-4">
+            <button @click="modalOpen = true" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark px-7 py-3.5 rounded-xl font-bold text-base shadow transition" x-text="t[currentLang].getQuote">
             </button>
-            <a href="https://wa.me/255623377391?text=Hello%20PameTours,%20I'm%20interested%20in%20the%205%20Days%20Tour%20in%20Tanzania." target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2 transition">
-              <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Us
+            <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3.5 rounded-xl font-bold text-base flex items-center gap-2 transition" x-text="t[currentLang].whatsapp">
             </a>
           </div>
         </div>
       </div>
 
       <!-- Package Item 3 -->
-      <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition flex flex-col md:flex-row">
-        <div class="md:w-2/5 h-64 md:h-auto relative shrink-0">
+      <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition flex flex-col md:flex-row">
+        <div class="md:w-2/5 h-72 md:h-auto relative shrink-0">
           <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80" alt="Serengeti Wildlife Migration" class="w-full h-full object-cover" />
-          <span class="absolute top-4 left-4 bg-brand-green text-brand-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">6 Days</span>
+          <span class="absolute top-6 left-6 bg-brand-green text-brand-gold text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">6 Days</span>
         </div>
-        <div class="p-6 md:p-8 md:w-3/5 flex flex-col justify-between">
+        <div class="p-8 md:p-10 md:w-3/5 flex flex-col justify-between">
           <div>
-            <h2 class="text-2xl font-bold text-brand-green mb-2">3. 6 Days Northern Tanzania Safari Expedition</h2>
-            <p class="text-gray-600 text-sm mb-4">An immersive 6-day expedition tracking big cats and the Great Wildebeest Migration across northern parks.</p>
+            <h2 class="text-3xl font-bold text-brand-green mb-3" x-text="t[currentLang].days6ExpTitle"></h2>
+            <p class="text-gray-600 text-base mb-6" x-text="t[currentLang].days6ExpDesc"></p>
             
-            <div class="bg-brand-sand/60 border border-brand-gold/20 rounded-xl p-4 mb-6">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-brand-green mb-2.5 flex items-center gap-1.5">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-gold"></i> Detailed Itinerary Breakdown:
+            <div class="bg-brand-sand/70 border border-brand-gold/20 rounded-2xl p-6 mb-8">
+              <h4 class="text-sm font-bold uppercase tracking-wider text-brand-green mb-3 flex items-center gap-2">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-gold"></i> Detailed Itinerary Breakdown:
               </h4>
-              <ul class="text-xs text-gray-700 space-y-2">
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 1:</strong> <span>Arusha Pick-up & Orientation</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 2:</strong> <span>Tarangire National Park Game Safari</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Days 3-4:</strong> <span>Central Serengeti & Migration Tracking</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 5:</strong> <span>Ngorongoro Crater Rim & Floor Drive</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 6:</strong> <span>Lake Manyara & Airport Departure</span></li>
+              <ul class="text-sm text-gray-700 space-y-3">
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 1:</strong> <span>Arusha Pick-up & Orientation</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 2:</strong> <span>Tarangire National Park Game Safari</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Days 3-4:</strong> <span>Central Serengeti & Migration Tracking</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 5:</strong> <span>Ngorongoro Crater Rim & Floor Drive</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 6:</strong> <span>Lake Manyara & Airport Departure</span></li>
               </ul>
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-3">
-            <button @click="modalOpen = true" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark px-6 py-2.5 rounded-lg font-bold text-sm shadow transition">
-              Request Quote for 6 Days Expedition
+          <div class="flex flex-wrap items-center gap-4">
+            <button @click="modalOpen = true" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark px-7 py-3.5 rounded-xl font-bold text-base shadow transition" x-text="t[currentLang].getQuote">
             </button>
-            <a href="https://wa.me/255623377391?text=Hello%20PameTours,%20I'm%20interested%20in%20the%206%20Days%20Northern%20Tanzania%20Safari%20Expedition." target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2 transition">
-              <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Us
+            <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3.5 rounded-xl font-bold text-base flex items-center gap-2 transition" x-text="t[currentLang].whatsapp">
             </a>
           </div>
         </div>
       </div>
 
       <!-- Package Item 4 -->
-      <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition flex flex-col md:flex-row">
-        <div class="md:w-2/5 h-64 md:h-auto relative shrink-0">
+      <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden hover:shadow-2xl transition flex flex-col md:flex-row">
+        <div class="md:w-2/5 h-72 md:h-auto relative shrink-0">
           <img src="https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80" alt="Wild Big Cats" class="w-full h-full object-cover" />
-          <span class="absolute top-4 left-4 bg-brand-green text-brand-gold text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">6 Days</span>
+          <span class="absolute top-6 left-6 bg-brand-green text-brand-gold text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">6 Days</span>
         </div>
-        <div class="p-6 md:p-8 md:w-3/5 flex flex-col justify-between">
+        <div class="p-8 md:p-10 md:w-3/5 flex flex-col justify-between">
           <div>
-            <h2 class="text-2xl font-bold text-brand-green mb-2">4. 6 Days Tanzania Wildlife Adventures</h2>
-            <p class="text-gray-600 text-sm mb-4">Deep dive into classic safari wilderness with extended nights inside Serengeti and Ngorongoro.</p>
+            <h2 class="text-3xl font-bold text-brand-green mb-3" x-text="t[currentLang].days6WildTitle"></h2>
+            <p class="text-gray-600 text-base mb-6" x-text="t[currentLang].days6WildDesc"></p>
             
-            <div class="bg-brand-sand/60 border border-brand-gold/20 rounded-xl p-4 mb-6">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-brand-green mb-2.5 flex items-center gap-1.5">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-gold"></i> Detailed Itinerary Breakdown:
+            <div class="bg-brand-sand/70 border border-brand-gold/20 rounded-2xl p-6 mb-8">
+              <h4 class="text-sm font-bold uppercase tracking-wider text-brand-green mb-3 flex items-center gap-2">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-gold"></i> Detailed Itinerary Breakdown:
               </h4>
-              <ul class="text-xs text-gray-700 space-y-2">
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 1:</strong> <span>Arrival & Briefing in Arusha</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 2:</strong> <span>Lake Manyara National Park</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Days 3-4:</strong> <span>Deep Serengeti Wildlife Safari</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 5:</strong> <span>Ngorongoro Crater Rim & Floor</span></li>
-                <li class="flex gap-2"><strong class="text-brand-green shrink-0">Day 6:</strong> <span>Arusha Airport Drop-off</span></li>
+              <ul class="text-sm text-gray-700 space-y-3">
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 1:</strong> <span>Arrival & Briefing in Arusha</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 2:</strong> <span>Lake Manyara National Park</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Days 3-4:</strong> <span>Deep Serengeti Wildlife Safari</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 5:</strong> <span>Ngorongoro Crater Rim & Floor</span></li>
+                <li class="flex gap-3"><strong class="text-brand-green shrink-0">Day 6:</strong> <span>Arusha Airport Drop-off</span></li>
               </ul>
             </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-3">
-            <button @click="modalOpen = true" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark px-6 py-2.5 rounded-lg font-bold text-sm shadow transition">
-              Request Quote for 6 Days Wildlife
+          <div class="flex flex-wrap items-center gap-4">
+            <button @click="modalOpen = true" class="bg-brand-gold hover:bg-yellow-500 text-brand-dark px-7 py-3.5 rounded-xl font-bold text-base shadow transition" x-text="t[currentLang].getQuote">
             </button>
-            <a href="https://wa.me/255623377391?text=Hello%20PameTours,%20I'm%20interested%20in%20the%206%20Days%20Tanzania%20Wildlife%20Adventures." target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2 transition">
-              <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Us
+            <a href="https://wa.me/255623377391" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3.5 rounded-xl font-bold text-base flex items-center gap-2 transition" x-text="t[currentLang].whatsapp">
             </a>
           </div>
         </div>
       </div>
-
     </section>
 
     <!-- ACCOMMODATION PAGE -->
-    <section x-show="activePage === 'accommodation'" x-transition class="py-12 max-w-7xl mx-auto px-6">
+    <section x-show="activePage === 'accommodation'" x-transition class="py-16 max-w-[92%] mx-auto px-4">
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-extrabold text-brand-green mb-3">Lodges & Accommodations</h1>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-brand-green mb-4" x-text="t[currentLang].accTitle"></h1>
+        <p class="text-gray-600 max-w-3xl mx-auto text-lg" x-text="t[currentLang].accDesc"></p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-2xl border shadow"><h3 class="font-bold text-lg mb-2">Standard Tier</h3><p class="text-sm text-gray-600">Clean, budget permanent tented camps with en-suite options.</p></div>
-        <div class="bg-white p-6 rounded-2xl border border-brand-gold shadow"><h3 class="font-bold text-lg mb-2">Mid-Range Tier</h3><p class="text-sm text-gray-600">Comfortable 3-star lodges with pools and fine dining.</p></div>
-        <div class="bg-white p-6 rounded-2xl border border-brand-green shadow"><h3 class="font-bold text-lg mb-2">Luxury Tier</h3><p class="text-sm text-gray-600">Exclusive 5-star lodges inside national parks with butler service.</p></div>
+
+      <!-- Destination Selector Tabs -->
+      <div class="flex flex-wrap justify-center gap-4 mb-16">
+        <button @click="selectedDestination = 'tarangire'" 
+                :class="selectedDestination === 'tarangire' ? 'bg-brand-green text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-100'"
+                class="px-8 py-3.5 rounded-full font-bold text-base transition-all border border-gray-200">
+          Tarangire National Park
+        </button>
+        <button @click="selectedDestination = 'serengeti'" 
+                :class="selectedDestination === 'serengeti' ? 'bg-brand-green text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-100'"
+                class="px-8 py-3.5 rounded-full font-bold text-base transition-all border border-gray-200">
+          Serengeti National Park
+        </button>
+        <button @click="selectedDestination = 'ngorongoro'" 
+                :class="selectedDestination === 'ngorongoro' ? 'bg-brand-green text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-100'"
+                class="px-8 py-3.5 rounded-full font-bold text-base transition-all border border-gray-200">
+          Ngorongoro Conservation Area
+        </button>
+      </div>
+
+      <!-- TARANGIRE ACCOMMODATIONS -->
+      <div x-show="selectedDestination === 'tarangire'" x-transition class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+          <div class="h-64 relative">
+            <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-gray-800 text-white text-sm font-bold px-4 py-1 rounded-full" x-text="t[currentLang].standardTier"></span>
+          </div>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-brand-green mb-2">Tarangire Public Campsite / Permanent Tented Camp</h3>
+              <p class="text-sm text-gray-500 mb-4">Tarangire Park Boundary</p>
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">Comfortable heavy-duty canvas safari tents with twin/double beds, solar lighting, en-suite bathroom facilities, and fresh dining menu prepared by dedicated private chef.</p>
+            </div>
+            <ul class="text-sm text-gray-700 space-y-2 border-t pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> En-suite flush toilet & shower</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Campfire evening social</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-brand-gold/50 flex flex-col">
+          <div class="h-64 relative">
+            <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-amber-600 text-white text-sm font-bold px-4 py-1 rounded-full" x-text="t[currentLang].midTier"></span>
+          </div>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-brand-green mb-2">Sangaiwe Tented Lodge</h3>
+              <p class="text-sm text-gray-500 mb-4">Overlooking Lake Burunge</p>
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">Elevated wooden deck tented rooms featuring panoramic rift valley views, swimming pool, main lounge dining area, and 24/7 power.</p>
+            </div>
+            <ul class="text-sm text-gray-700 space-y-2 border-t pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Swimming pool & lounge deck</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Wi-Fi in common areas</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-brand-green flex flex-col">
+          <div class="h-64 relative">
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            <span class="absolute top-4 right-4 bg-emerald-700 text-white text-sm font-bold px-4 py-1 rounded-full" x-text="t[currentLang].luxuryTier"></span>
+          </div>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-brand-green mb-2">Tarangire Treetops by Elewana</h3>
+              <p class="text-sm text-gray-500 mb-4">Private Conservation Area</p>
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">Ultra-exclusive luxury suites built elevated in ancient Baobab tree crowns. Features private butler service, fine dining, infinity pool, and night game drives.</p>
+            </div>
+            <ul class="text-sm text-gray-700 space-y-2 border-t pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Private tree-house luxury suites</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Night safari & bush dining included</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERENGETI ACCOMMODATIONS -->
+      <div x-show="selectedDestination === 'serengeti'" x-transition class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+          <div class="h-64 relative">
+            <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-gray-800 text-white text-sm font-bold px-4 py-1 rounded-full" x-text="t[currentLang].standardTier"></span>
+          </div>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-brand-green mb-2">Seronera Central Camp</h3>
+              <p class="text-sm text-gray-500 mb-4">Central Serengeti National Park</p>
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">Wilderness camp positioned right in central Seronera valley for optimum wildlife encounters. Secure canvas tents with warm showers and full-board safari meals.</p>
+            </div>
+            <ul class="text-sm text-gray-700 space-y-2 border-t pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Prime wildlife corridor placement</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Fresh cooked 3-course dinners</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-brand-gold/50 flex flex-col">
+          <div class="h-64 relative">
+            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-amber-600 text-white text-sm font-bold px-4 py-1 rounded-full" x-text="t[currentLang].midTier"></span>
+          </div>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-brand-green mb-2">Serengeti Heritage Luxury Tented Camp</h3>
+              <p class="text-sm text-gray-500 mb-4">Central / Migration Track</p>
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">Spacious walk-in tented suites with king beds, hardwood furniture, full private bathrooms, and exceptional evening bush dining experience.</p>
+            </div>
+            <ul class="text-sm text-gray-700 space-y-2 border-t pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> High-speed camp Wi-Fi</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Electric charging inside tents</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-brand-green flex flex-col">
+          <div class="h-64 relative">
+            <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-emerald-700 text-white text-sm font-bold px-4 py-1 rounded-full" x-text="t[currentLang].luxuryTier"></span>
+          </div>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-brand-green mb-2">Four Seasons Safari Lodge Serengeti</h3>
+              <p class="text-sm text-gray-500 mb-4">Deep Central Serengeti</p>
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">5-star luxury sanctuary featuring infinity pool directly facing an active elephant watering hole, luxury spa, fine dining, and elevated catwalks.</p>
+            </div>
+            <ul class="text-sm text-gray-700 space-y-2 border-t pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Watering hole view infinity pool</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> 24-hour room service & wine cellar</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- NGORONGORO ACCOMMODATIONS -->
+      <div x-show="selectedDestination === 'ngorongoro'" x-transition class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col">
+          <div class="h-64 relative">
+            <img src="https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-gray-800 text-white text-sm font-bold px-4 py-1 rounded-full" x-text="t[currentLang].standardTier"></span>
+          </div>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-brand-green mb-2">Simba Public Campsite</h3>
+              <p class="text-sm text-gray-500 mb-4">Crater Rim Edge</p>
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">Located directly on the Ngorongoro crater rim. Includes high quality dome tents, sleeping pads, and warm communal dining halls staffed by safari cooks.</p>
+            </div>
+            <ul class="text-sm text-gray-700 space-y-2 border-t pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Dramatic crater rim views</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Early morning crater access</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-brand-gold/50 flex flex-col">
+          <div class="h-64 relative">
+            <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-amber-600 text-white text-sm font-bold px-4 py-1 rounded-full" x-text="t[currentLang].midTier"></span>
+          </div>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-brand-green mb-2">Rhino Lodge Ngorongoro</h3>
+              <p class="text-sm text-gray-500 mb-4">Highland Forest Edge</p>
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">Warm, cozy lodge rooms equipped with wood-burning fireplaces for cold mountain evenings, private verandahs overlooking pristine crater forest.</p>
+            </div>
+            <ul class="text-sm text-gray-700 space-y-2 border-t pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> In-room wood fireplace</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Buffet dining & full bar</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border-2 border-brand-green flex flex-col">
+          <div class="h-64 relative">
+            <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+            <span class="absolute top-4 left-4 bg-emerald-700 text-white text-sm font-bold px-4 py-1 rounded-full" x-text="t[currentLang].luxuryTier"></span>
+          </div>
+          <div class="p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-brand-green mb-2">Ngorongoro Crater Lodge (beyond)</h3>
+              <p class="text-sm text-gray-500 mb-4">Crater Rim Direct Summit</p>
+              <p class="text-gray-600 text-sm leading-relaxed mb-6">Architectural masterpiece with grand stilted suites, chandelier dining rooms, private butler service, and unmatched views across the crater floor.</p>
+            </div>
+            <ul class="text-sm text-gray-700 space-y-2 border-t pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Dedicated personal butler</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-gold"></i> Private rim vantage deck</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ABOUT US PAGE -->
     <section x-show="activePage === 'about'" x-transition class="w-full">
-      <div class="relative bg-brand-green text-white py-20 px-6 overflow-hidden">
+      <div class="relative bg-brand-green text-white py-24 px-6 overflow-hidden">
         <div class="absolute inset-0 opacity-20 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1920&q=80')"></div>
         <div class="relative max-w-5xl mx-auto text-center">
-          <span class="inline-block px-4 py-1 mb-4 text-xs font-semibold uppercase tracking-widest bg-brand-gold/20 text-brand-gold border border-brand-gold/40 rounded-full">
+          <span class="inline-block px-5 py-2 mb-6 text-sm font-semibold uppercase tracking-widest bg-brand-gold/20 text-brand-gold border border-brand-gold/40 rounded-full">
             Local Expertise & Unmatched Hospitality
           </span>
-          <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">About PameTours</h1>
-          <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
-            Based in Arusha, Tanzania, PameTours is a premier indigenous tour operator dedicated to crafting unforgettable wildlife safaris, luxury accommodations, and rich cultural interactions.
-          </p>
+          <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6" x-text="t[currentLang].aboutTitle"></h1>
+          <p class="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed" x-text="t[currentLang].aboutDesc"></p>
         </div>
       </div>
 
-      <div class="py-16 max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
+      <div class="py-20 max-w-[92%] mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-24">
           <div>
-            <h2 class="text-3xl font-bold text-brand-green mb-4">Crafting Lifelong Safari Memories</h2>
-            <div class="w-12 h-1 bg-brand-gold mb-6"></div>
-            <p class="text-gray-600 leading-relaxed mb-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-brand-green mb-4">Crafting Lifelong Safari Memories</h2>
+            <div class="w-16 h-1.5 bg-brand-gold mb-8"></div>
+            <p class="text-gray-600 text-lg leading-relaxed mb-6">
               At PameTours, we believe a safari is more than just a holiday—it’s a transformation. Our team of veteran Tanzanian guides, naturalists, and travel planners bring years of local knowledge to craft seamless, safe, and breathtaking journeys across Northern Tanzania.
             </p>
-            <p class="text-gray-600 leading-relaxed mb-6">
+            <p class="text-gray-600 text-lg leading-relaxed mb-8">
               From tracking the Big Five across the Endless Plains of the Serengeti to witnessing the awe-inspiring Ngorongoro Crater, we tailor every detail to match your preferred travel style and budget.
             </p>
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-8">
               <div>
-                <span class="block text-3xl font-extrabold text-brand-gold">100%</span>
-                <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Tailored Itineraries</span>
+                <span class="block text-4xl font-extrabold text-brand-gold">100%</span>
+                <span class="text-sm text-gray-500 uppercase tracking-wider font-semibold">Tailored Itineraries</span>
               </div>
-              <div class="border-l pl-6 border-gray-300">
-                <span class="block text-3xl font-extrabold text-brand-green">Local</span>
-                <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Expert Guides</span>
+              <div class="border-l pl-8 border-gray-300">
+                <span class="block text-4xl font-extrabold text-brand-green">Local</span>
+                <span class="text-sm text-gray-500 uppercase tracking-wider font-semibold">Expert Guides</span>
               </div>
             </div>
           </div>
 
           <div class="relative">
-            <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-              <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80" alt="Safari Driver Guide" class="w-full h-80 md:h-96 object-cover">
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+              <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80" alt="Safari Driver Guide" class="w-full h-96 md:h-[450px] object-cover">
             </div>
-            <div class="absolute -bottom-6 -left-6 bg-brand-dark text-white p-6 rounded-2xl shadow-xl hidden sm:block max-w-xs border border-brand-gold/30">
-              <p class="text-xs text-brand-gold font-bold mb-1">Karibu Tanzania</p>
-              <p class="text-xs text-gray-300">"We don't just show you wildlife; we welcome you home to Africa."</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-20">
-          <div class="text-center mb-12">
-            <h3 class="text-3xl font-bold text-brand-green mb-2">Our Core Services</h3>
-            <p class="text-gray-600 text-sm max-w-lg mx-auto">Comprehensive travel solutions designed to give you complete peace of mind.</p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-md hover:shadow-xl transition-all group">
-              <div class="w-12 h-12 bg-brand-sand rounded-xl flex items-center justify-center text-brand-green mb-4 group-hover:bg-brand-gold group-hover:text-brand-dark transition-all">
-                <i data-lucide="compass" class="w-6 h-6"></i>
-              </div>
-              <h4 class="text-lg font-bold text-brand-green mb-2">Custom Wildlife Safaris</h4>
-              <p class="text-xs text-gray-600 leading-relaxed">Private & group game drives across Tarangire, Serengeti, Lake Manyara, and Ngorongoro Crater in 4x4 pop-top Land Cruisers.</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-md hover:shadow-xl transition-all group">
-              <div class="w-12 h-12 bg-brand-sand rounded-xl flex items-center justify-center text-brand-green mb-4 group-hover:bg-brand-gold group-hover:text-brand-dark transition-all">
-                <i data-lucide="hotel" class="w-6 h-6"></i>
-              </div>
-              <h4 class="text-lg font-bold text-brand-green mb-2">Accommodation Booking</h4>
-              <p class="text-xs text-gray-600 leading-relaxed">Handpicked stays across Standard Tented Camps, Mid-Range Lodges, and Exclusive 5-Star Luxury Wilderness Resorts.</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-md hover:shadow-xl transition-all group">
-              <div class="w-12 h-12 bg-brand-sand rounded-xl flex items-center justify-center text-brand-green mb-4 group-hover:bg-brand-gold group-hover:text-brand-dark transition-all">
-                <i data-lucide="users" class="w-6 h-6"></i>
-              </div>
-              <h4 class="text-lg font-bold text-brand-green mb-2">Cultural & Tribe Tours</h4>
-              <p class="text-xs text-gray-600 leading-relaxed">Authentic cultural immersions with the Hadzabe bushmen, Datoga blacksmiths, and traditional Maasai villages.</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-md hover:shadow-xl transition-all group">
-              <div class="w-12 h-12 bg-brand-sand rounded-xl flex items-center justify-center text-brand-green mb-4 group-hover:bg-brand-gold group-hover:text-brand-dark transition-all">
-                <i data-lucide="plane-landing" class="w-6 h-6"></i>
-              </div>
-              <h4 class="text-lg font-bold text-brand-green mb-2">Airport Logistics & Transfers</h4>
-              <p class="text-xs text-gray-600 leading-relaxed">Seamless pick-up & drop-off services from Kilimanjaro International Airport (JRO) and Arusha Airport (ARK).</p>
+            <div class="absolute -bottom-8 -left-8 bg-brand-dark text-white p-8 rounded-3xl shadow-2xl hidden sm:block max-w-sm border border-brand-gold/30">
+              <p class="text-sm text-brand-gold font-bold mb-2">Karibu Tanzania</p>
+              <p class="text-sm text-gray-300">"We don't just show you wildlife; we welcome you home to Africa."</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-brand-green rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
-          <div class="relative z-10 max-w-xl">
-            <span class="text-xs font-bold uppercase tracking-widest text-brand-gold mb-2 block">Connect With Us</span>
-            <h3 class="text-2xl md:text-3xl font-extrabold mb-3">Follow Our Safari Adventures</h3>
-            <p class="text-xs text-gray-300 leading-relaxed mb-6">Stay updated with live game drive photos, Great Migration updates, and traveler stories on our official social channels.</p>
+        <!-- Core Services Offered -->
+        <div class="mb-24">
+          <div class="text-center mb-16">
+            <h3 class="text-3xl md:text-4xl font-bold text-brand-green mb-4">Our Core Services</h3>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">Comprehensive travel solutions designed to give you complete peace of mind.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all group">
+              <div class="w-14 h-14 bg-brand-sand rounded-2xl flex items-center justify-center text-brand-green mb-6 group-hover:bg-brand-gold group-hover:text-brand-dark transition-all">
+                <i data-lucide="compass" class="w-7 h-7"></i>
+              </div>
+              <h4 class="text-xl font-bold text-brand-green mb-3">Custom Wildlife Safaris</h4>
+              <p class="text-sm text-gray-600 leading-relaxed">Private & group game drives across Tarangire, Serengeti, Lake Manyara, and Ngorongoro Crater in 4x4 pop-top Land Cruisers.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all group">
+              <div class="w-14 h-14 bg-brand-sand rounded-2xl flex items-center justify-center text-brand-green mb-6 group-hover:bg-brand-gold group-hover:text-brand-dark transition-all">
+                <i data-lucide="hotel" class="w-7 h-7"></i>
+              </div>
+              <h4 class="text-xl font-bold text-brand-green mb-3">Accommodation Booking</h4>
+              <p class="text-sm text-gray-600 leading-relaxed">Handpicked stays across Standard Tented Camps, Mid-Range Lodges, and Exclusive 5-Star Luxury Wilderness Resorts.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all group">
+              <div class="w-14 h-14 bg-brand-sand rounded-2xl flex items-center justify-center text-brand-green mb-6 group-hover:bg-brand-gold group-hover:text-brand-dark transition-all">
+                <i data-lucide="users" class="w-7 h-7"></i>
+              </div>
+              <h4 class="text-xl font-bold text-brand-green mb-3">Cultural & Tribe Tours</h4>
+              <p class="text-sm text-gray-600 leading-relaxed">Authentic cultural immersions with the Hadzabe bushmen, Datoga blacksmiths, and traditional Maasai villages.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all group">
+              <div class="w-14 h-14 bg-brand-sand rounded-2xl flex items-center justify-center text-brand-green mb-6 group-hover:bg-brand-gold group-hover:text-brand-dark transition-all">
+                <i data-lucide="plane-landing" class="w-7 h-7"></i>
+              </div>
+              <h4 class="text-xl font-bold text-brand-green mb-3">Airport Logistics & Transfers</h4>
+              <p class="text-sm text-gray-600 leading-relaxed">Seamless pick-up & drop-off services from Kilimanjaro International Airport (JRO) and Arusha Airport (ARK).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Media Banner -->
+        <div class="bg-brand-green rounded-3xl p-10 md:p-16 text-white relative overflow-hidden shadow-2xl flex flex-col md:flex-row items-center justify-between gap-10">
+          <div class="relative z-10 max-w-2xl">
+            <span class="text-sm font-bold uppercase tracking-widest text-brand-gold mb-3 block">Connect With Us</span>
+            <h3 class="text-3xl md:text-4xl font-extrabold mb-4">Follow Our Safari Adventures</h3>
+            <p class="text-base text-gray-300 leading-relaxed mb-8">Stay updated with live game drive photos, Great Migration updates, and traveler stories on our official social channels.</p>
             
             <div class="flex flex-wrap items-center gap-4">
-              <a href="https://www.facebook.com/61593326076324/posts/122100120609444202/?substory_index=1802107107803327&app=fbl" target="_blank" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-4 py-2.5 rounded-full text-xs font-semibold transition-all">
-                <i data-lucide="facebook" class="w-4 h-4 text-brand-gold"></i> Facebook
+              <a href="https://www.facebook.com/61593326076324/posts/122100120609444202/?substory_index=1802107107803327&app=fbl" target="_blank" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-3 rounded-full text-sm font-semibold transition-all">
+                <i data-lucide="facebook" class="w-5 h-5 text-brand-gold"></i> Facebook
               </a>
-              <a href="https://www.instagram.com/pame.tours?igsh=MWV5NGQ4NnpoZTVodQ==" target="_blank" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-4 py-2.5 rounded-full text-xs font-semibold transition-all">
-                <i data-lucide="instagram" class="w-4 h-4 text-brand-gold"></i> Instagram
+              <a href="https://www.instagram.com/pame.tours?igsh=MWV5NGQ4NnpoZTVodQ==" target="_blank" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-3 rounded-full text-sm font-semibold transition-all">
+                <i data-lucide="instagram" class="w-5 h-5 text-brand-gold"></i> Instagram
               </a>
-              <a href="https://wa.me/255623377391" target="_blank" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-full text-xs font-semibold transition-all shadow-md">
-                <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp Channel
+              <a href="https://wa.me/255623377391" target="_blank" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-full text-sm font-semibold transition-all shadow-md">
+                <i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp Channel
               </a>
             </div>
           </div>
 
-          <div class="relative z-10 shrink-0 bg-brand-dark/60 p-6 rounded-2xl border border-brand-gold/30 text-center max-w-xs w-full">
-            <h4 class="text-sm font-bold text-brand-gold mb-1">Ready for the Wild?</h4>
-            <p class="text-xs text-gray-300 mb-4">Get in touch with our experts to start planning your custom itinerary.</p>
-            <button @click="activePage = 'contact'" class="w-full bg-brand-gold text-brand-dark text-xs font-bold py-2.5 rounded-xl shadow hover:bg-yellow-500 transition">
+          <div class="relative z-10 shrink-0 bg-brand-dark/70 p-8 rounded-3xl border border-brand-gold/30 text-center max-w-sm w-full">
+            <h4 class="text-lg font-bold text-brand-gold mb-2">Ready for the Wild?</h4>
+            <p class="text-sm text-gray-300 mb-6">Get in touch with our experts to start planning your custom itinerary.</p>
+            <button @click="activePage = 'contact'" class="w-full bg-brand-gold text-brand-dark text-sm font-bold py-3.5 rounded-2xl shadow-lg hover:bg-yellow-500 transition">
               Contact Us Today
             </button>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- COMPLETE CONTACT US PAGE -->
-    <section x-show="activePage === 'contact'" x-transition class="w-full">
-      
-      <!-- Contact Hero Banner -->
-      <div class="bg-brand-green text-white py-16 px-6 relative overflow-hidden">
-        <div class="max-w-5xl mx-auto text-center relative z-10">
-          <span class="inline-block px-4 py-1 mb-3 text-xs font-semibold uppercase tracking-widest bg-brand-gold/20 text-brand-gold border border-brand-gold/40 rounded-full">
-            We're Here To Help
-          </span>
-          <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">Contact Our Safari Experts</h1>
-          <p class="text-gray-200 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-            Have questions about custom itineraries, park fees, seasonal migration routes, or group bookings? Get in touch with our Arusha-based team anytime.
-          </p>
-        </div>
+    <!-- CONTACT PAGE -->
+    <section x-show="activePage === 'contact'" x-transition class="py-16 max-w-[92%] mx-auto px-4">
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-brand-green mb-4" x-text="t[currentLang].contactTitle"></h1>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg" x-text="t[currentLang].contactDesc"></p>
       </div>
 
-      <!-- Main Contact Grid -->
-      <div class="max-w-7xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
         
-        <!-- Contact Info Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-          
-          <!-- Card 1: Phone & WhatsApp -->
-          <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-md flex flex-col items-center text-center hover:border-brand-gold transition-all">
-            <div class="w-12 h-12 bg-green-100 text-green-700 rounded-2xl flex items-center justify-center mb-4">
-              <i data-lucide="phone-call" class="w-6 h-6"></i>
+        <!-- Direct Contact Cards -->
+        <div class="space-y-6">
+          <div class="bg-white p-8 rounded-3xl border shadow-md flex items-start gap-5">
+            <div class="bg-brand-gold/20 p-4 rounded-2xl text-brand-gold shrink-0">
+              <i data-lucide="map-pin" class="w-7 h-7"></i>
             </div>
-            <h3 class="font-bold text-brand-green mb-1 text-base">Direct Line & WhatsApp</h3>
-            <p class="text-xs text-gray-500 mb-3">Available 24/7 for instant inquiries</p>
-            <a href="https://wa.me/255623377391" target="_blank" class="text-xs font-bold text-green-700 hover:underline">
-              +255 623 377 391
-            </a>
+            <div>
+              <h4 class="font-bold text-brand-green text-base">Headquarters</h4>
+              <p class="text-sm text-gray-600 mt-1 leading-relaxed">Clock Tower Area, Arusha City<br>Tanzania, East Africa</p>
+            </div>
           </div>
 
-          <!-- Card 2: Email -->
-          <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-md flex flex-col items-center text-center hover:border-brand-gold transition-all">
-            <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-2xl flex items-center justify-center mb-4">
-              <i data-lucide="mail" class="w-6 h-6"></i>
+          <div class="bg-white p-8 rounded-3xl border shadow-md flex items-start gap-5">
+            <div class="bg-brand-gold/20 p-4 rounded-2xl text-brand-gold shrink-0">
+              <i data-lucide="mail" class="w-7 h-7"></i>
             </div>
-            <h3 class="font-bold text-brand-green mb-1 text-base">Email Us</h3>
-            <p class="text-xs text-gray-500 mb-3">Proforma invoices & detailed queries</p>
-            <a href="mailto:info@pametours.com" class="text-xs font-bold text-brand-gold hover:underline">
-              info@pametours.com
-            </a>
+            <div>
+              <h4 class="font-bold text-brand-green text-base">Direct Email</h4>
+              <p class="text-sm text-gray-600 mt-1 leading-relaxed">info@pametours.com<br>bookings@pametours.com</p>
+            </div>
           </div>
 
-          <!-- Card 3: Location -->
-          <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-md flex flex-col items-center text-center hover:border-brand-gold transition-all">
-            <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mb-4">
-              <i data-lucide="map-pin" class="w-6 h-6"></i>
+          <div class="bg-white p-8 rounded-3xl border shadow-md flex items-start gap-5">
+            <div class="bg-brand-gold/20 p-4 rounded-2xl text-brand-gold shrink-0">
+              <i data-lucide="phone-call" class="w-7 h-7"></i>
             </div>
-            <h3 class="font-bold text-brand-green mb-1 text-base">Headquarters</h3>
-            <p class="text-xs text-gray-500 mb-3">Safari Capital of Tanzania</p>
-            <span class="text-xs font-bold text-brand-green">Arusha, Tanzania</span>
+            <div>
+              <h4 class="font-bold text-brand-green text-base">WhatsApp & Phone</h4>
+              <p class="text-sm text-gray-600 mt-1 leading-relaxed">+255 623 377 391<br>24/7 Safari Support Line</p>
+            </div>
           </div>
 
-          <!-- Card 4: Office Hours -->
-          <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-md flex flex-col items-center text-center hover:border-brand-gold transition-all">
-            <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center mb-4">
-              <i data-lucide="clock" class="w-6 h-6"></i>
-            </div>
-            <h3 class="font-bold text-brand-green mb-1 text-base">Business Hours</h3>
-            <p class="text-xs text-gray-500 mb-1">Mon - Sat: 8:00 AM - 6:00 PM</p>
-            <span class="text-[10px] text-green-600 font-bold uppercase tracking-wider">24/7 Field Support</span>
+          <div class="bg-brand-green text-white p-8 rounded-3xl shadow-md">
+            <h4 class="font-bold text-base text-brand-gold mb-3">Office Hours</h4>
+            <p class="text-sm text-gray-200">Monday - Saturday: 8:00 AM - 6:00 PM (EAT)</p>
+            <p class="text-sm text-gray-200 mt-2">24/7 Field Support for Active Travelers</p>
           </div>
-
         </div>
 
-        <!-- Form & Details Split View -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          <!-- Contact Form Container (7 cols) -->
-          <div class="lg:col-span-7 bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100">
-            <h2 class="text-2xl font-bold text-brand-green mb-2">Send Us an Inquiry</h2>
-            <p class="text-xs text-gray-500 mb-6">Fill in the details below and our travel consultants will respond within 2 to 4 hours with tailored pricing and advice.</p>
-            
-            <template x-if="contactSubmitted">
-              <div class="bg-green-50 border border-green-200 text-green-800 p-6 rounded-2xl text-center space-y-3">
-                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
-                  <i data-lucide="check" class="w-6 h-6"></i>
-                </div>
-                <h3 class="font-bold text-lg">Asante Sana! Message Received</h3>
-                <p class="text-xs text-gray-600">Thank you for reaching out to PameTours. One of our safari planners is working on your itinerary details now.</p>
-                <button @click="contactSubmitted = false" class="text-xs text-brand-green font-bold underline pt-2 block mx-auto">Send another message</button>
-              </div>
-            </template>
-
-            <form x-show="!contactSubmitted" @submit.prevent="contactSubmitted = true" class="space-y-4">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Contact Form Column -->
+        <div class="md:col-span-2 bg-white p-10 md:p-12 rounded-3xl shadow-xl border">
+          <div x-show="!contactSubmitted">
+            <h3 class="text-2xl font-bold text-brand-green mb-6">Send Us a Direct Safari Message</h3>
+            <form @submit.prevent="contactSubmitted = true" class="space-y-6">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-xs font-bold text-gray-700 mb-1">Your Full Name *</label>
-                  <input type="text" x-model="contactForm.name" required placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-brand-gold focus:outline-none">
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
+                  <input type="text" required placeholder="John Doe" class="w-full p-4 border rounded-2xl text-sm focus:ring-2 focus:ring-brand-gold outline-none">
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-gray-700 mb-1">Email Address *</label>
-                  <input type="email" x-model="contactForm.email" required placeholder="e.g. sarah@example.com" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-brand-gold focus:outline-none">
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
+                  <input type="email" required placeholder="john@example.com" class="w-full p-4 border rounded-2xl text-sm focus:ring-2 focus:ring-brand-gold outline-none">
                 </div>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-xs font-bold text-gray-700 mb-1">Phone / WhatsApp *</label>
-                  <input type="tel" x-model="contactForm.phone" required placeholder="+1 234 567 890" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-brand-gold focus:outline-none">
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Estimated Travel Month</label>
+                  <select class="w-full p-4 border rounded-2xl text-sm focus:ring-2 focus:ring-brand-gold outline-none text-gray-600">
+                    <option>June - October (Dry Season)</option>
+                    <option>November - March (Green / Calving Season)</option>
+                    <option>April - May</option>
+                  </select>
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-gray-700 mb-1">Preferred Package / Duration</label>
-                  <select x-model="contactForm.package" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-brand-gold focus:outline-none bg-white">
-                    <option>4 Days Cultural & Expedition Safari</option>
-                    <option>5 Days Tour in Tanzania</option>
-                    <option>6 Days Northern Safari Expedition</option>
-                    <option>6 Days Tanzania Wildlife Adventures</option>
-                    <option>Custom Tailored Itinerary</option>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Preferred Accommodation Tier</label>
+                  <select class="w-full p-4 border rounded-2xl text-sm focus:ring-2 focus:ring-brand-gold outline-none text-gray-600">
+                    <option>Standard Tier</option>
+                    <option>Mid-Range Tier</option>
+                    <option>Luxury Tier</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">Your Message or Safari Requirements</label>
-                <textarea x-model="contactForm.message" rows="4" placeholder="Tell us your travel dates, group size, accommodation preference (Standard, Mid-Range, Luxury), and special requests..." class="w-full px-4 py-3 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-brand-gold focus:outline-none"></textarea>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Message & Specific Requirements</label>
+                <textarea rows="5" required placeholder="Tell us about your group size, required dates, or special travel preferences..." class="w-full p-4 border rounded-2xl text-sm focus:ring-2 focus:ring-brand-gold outline-none"></textarea>
               </div>
 
-              <button type="submit" class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-3.5 rounded-xl shadow-lg transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-                <i data-lucide="send" class="w-4 h-4"></i> Submit Inquiry Now
+              <button type="submit" class="w-full bg-brand-gold hover:bg-yellow-500 text-brand-dark font-bold py-4 rounded-2xl transition-all shadow-lg text-sm uppercase tracking-wider">
+                Send Safari Inquiry
               </button>
             </form>
           </div>
 
-          <!-- Interactive Details & FAQ Sidebar (5 cols) -->
-          <div class="lg:col-span-5 space-y-8">
-            
-            <!-- Quick WhatsApp Action Box -->
-            <div class="bg-brand-green text-white p-6 rounded-3xl shadow-lg border border-brand-gold/30">
-              <span class="text-[10px] font-bold uppercase tracking-widest text-brand-gold block mb-1">Fastest Response</span>
-              <h3 class="text-xl font-bold mb-2">Need Immediate Guidance?</h3>
-              <p class="text-xs text-gray-300 leading-relaxed mb-4">Chat directly with our lead safari manager on WhatsApp for instant quote requests and real-time availability check.</p>
-              <a href="https://wa.me/255623377391?text=Hello%20PameTours,%20I'd%20like%20to%20inquire%20about%20a%20safari." target="_blank" class="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-xs transition shadow">
-                <i data-lucide="message-circle" class="w-4 h-4"></i> Chat on WhatsApp (+255 623 377 391)
-              </a>
+          <div x-show="contactSubmitted" class="text-center py-16 space-y-6" x-transition>
+            <div class="bg-green-100 text-green-700 w-20 h-20 rounded-full flex items-center justify-center mx-auto">
+              <i data-lucide="check-circle" class="w-12 h-12"></i>
             </div>
-
-            <!-- Frequently Asked Questions Accordion -->
-            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-md">
-              <h3 class="text-lg font-bold text-brand-green mb-4 flex items-center gap-2">
-                <i data-lucide="help-circle" class="w-5 h-5 text-brand-gold"></i> Common Questions
-              </h3>
-              
-              <div class="space-y-3" x-data="{ openFaq: 1 }">
-                <!-- FAQ Item 1 -->
-                <div class="border border-gray-100 rounded-xl overflow-hidden">
-                  <button @click="openFaq = openFaq === 1 ? 0 : 1" class="w-full p-3 text-left font-bold text-xs text-brand-green flex justify-between items-center bg-brand-sand/40">
-                    <span>When is the best time for a safari?</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform" :class="openFaq === 1 ? 'rotate-180' : ''"></i>
-                  </button>
-                  <div x-show="openFaq === 1" class="p-3 text-xs text-gray-600 bg-white border-t border-gray-100">
-                    Tanzania is a magnificent year-round destination! June to October offers prime dry season game viewing and Great Migration river crossings, while December to March is ideal for wildebeest calving in the Southern Serengeti.
-                  </div>
-                </div>
-
-                <!-- FAQ Item 2 -->
-                <div class="border border-gray-100 rounded-xl overflow-hidden">
-                  <button @click="openFaq = openFaq === 2 ? 0 : 2" class="w-full p-3 text-left font-bold text-xs text-brand-green flex justify-between items-center bg-brand-sand/40">
-                    <span>What is included in safari quotes?</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform" :class="openFaq === 2 ? 'rotate-180' : ''"></i>
-                  </button>
-                  <div x-show="openFaq === 2" class="p-3 text-xs text-gray-600 bg-white border-t border-gray-100">
-                    All our packages include private 4x4 Land Cruiser transport, professional driver guide, park entry fees, transit permits, full-board accommodations, bottled drinking water during game drives, and airport pickup/drop-off.
-                  </div>
-                </div>
-
-                <!-- FAQ Item 3 -->
-                <div class="border border-gray-100 rounded-xl overflow-hidden">
-                  <button @click="openFaq = openFaq === 3 ? 0 : 3" class="w-full p-3 text-left font-bold text-xs text-brand-green flex justify-between items-center bg-brand-sand/40">
-                    <span>How do I reserve my safari dates?</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform" :class="openFaq === 3 ? 'rotate-180' : ''"></i>
-                  </button>
-                  <div x-show="openFaq === 3" class="p-3 text-xs text-gray-600 bg-white border-t border-gray-100">
-                    Once you approve your itinerary proposal, a 30% deposit secures your lodge reservations and permits. The remaining balance can be settled 30 days before arrival or upon arrival in Arusha.
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- Location Map Banner Section -->
-        <div class="mt-16 bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 p-8 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div class="max-w-md">
-            <span class="text-[10px] font-bold uppercase tracking-widest text-brand-gold block mb-1">Visit Our Operations Office</span>
-            <h3 class="text-2xl font-bold text-brand-green mb-2">Based in Arusha, Tanzania</h3>
-            <p class="text-xs text-gray-600 leading-relaxed mb-4">
-              Arusha is the safari gateway to Serengeti, Ngorongoro Crater, Lake Manyara, and Tarangire. Stop by our office for face-to-face safari briefings upon your arrival in Arusha town.
-            </p>
-            <div class="flex items-center gap-2 text-xs text-brand-green font-bold">
-              <i data-lucide="map-pin" class="w-4 h-4 text-brand-gold"></i>
-              <span>Arusha Town Center, Tanzania</span>
-            </div>
-          </div>
-
-          <div class="w-full md:w-1/2 h-48 bg-brand-sand rounded-2xl flex flex-col items-center justify-center border border-dashed border-gray-300 text-center p-6">
-            <i data-lucide="map" class="w-8 h-8 text-brand-green mb-2"></i>
-            <span class="text-xs font-bold text-brand-green">Interactive Northern Safari Circuit</span>
-            <p class="text-[10px] text-gray-500 mt-1">Serving JRO (Kilimanjaro Int'l Airport) & ARK (Arusha Airport)</p>
+            <h3 class="text-3xl font-bold text-brand-green">Asante Sana! Message Received</h3>
+            <p class="text-base text-gray-600 max-w-lg mx-auto leading-relaxed">Thank you for contacting PameTours. Our senior safari consultant is reviewing your inquiry and will send a detailed response within 12 hours.</p>
+            <button @click="contactSubmitted = false" class="bg-brand-green text-white px-8 py-3 rounded-2xl text-sm font-bold">Send Another Inquiry</button>
           </div>
         </div>
 
@@ -760,43 +1101,43 @@
 
   <!-- FREE SAFARI QUOTE MODAL -->
   <div x-show="modalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" x-transition>
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 mx-4 relative shadow-2xl">
-      <button @click="modalOpen = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
-        <i data-lucide="x" class="w-6 h-6"></i>
+    <div class="bg-white rounded-3xl max-w-lg w-full p-8 mx-4 relative shadow-2xl">
+      <button @click="modalOpen = false" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
+        <i data-lucide="x" class="w-7 h-7"></i>
       </button>
-      <h3 class="text-2xl font-bold text-brand-green mb-2">Get Free Safari Quote</h3>
-      <form class="space-y-3 mt-4">
-        <input type="text" placeholder="Full Name" class="w-full px-4 py-2 rounded-lg border text-sm">
-        <input type="email" placeholder="Email Address" class="w-full px-4 py-2 rounded-lg border text-sm">
-        <select class="w-full px-4 py-2 rounded-lg border text-sm">
+      <h3 class="text-3xl font-bold text-brand-green mb-3" x-text="t[currentLang].getQuote"></h3>
+      <form class="space-y-4 mt-6">
+        <input type="text" placeholder="Full Name" class="w-full px-5 py-3 rounded-2xl border text-base">
+        <input type="email" placeholder="Email Address" class="w-full px-5 py-3 rounded-2xl border text-base">
+        <select class="w-full px-5 py-3 rounded-2xl border text-base">
           <option>4 Days Tanzania Safari Cultural & Expedition</option>
           <option>5 Days Tour in Tanzania</option>
           <option>6 Days Northern Tanzania Safari Expedition</option>
           <option>6 Days Tanzania Wildlife Adventures</option>
         </select>
-        <button type="button" @click="modalOpen = false; alert('Thank you! We will reach out shortly.')" class="w-full bg-brand-green text-white font-bold py-2.5 rounded-lg text-sm">Send Quote Request</button>
+        <button type="button" @click="modalOpen = false; alert('Thank you! We will reach out shortly.')" class="w-full bg-brand-green text-white font-bold py-3.5 rounded-2xl text-base">Send Quote Request</button>
       </form>
     </div>
   </div>
 
   <!-- PAYMENTS MODAL -->
   <div x-show="paymentModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" x-transition>
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 mx-4 relative shadow-2xl text-center">
-      <button @click="paymentModalOpen = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
-        <i data-lucide="x" class="w-6 h-6"></i>
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 mx-4 relative shadow-2xl text-center">
+      <button @click="paymentModalOpen = false" class="absolute top-6 right-6 text-gray-400 hover:text-gray-700">
+        <i data-lucide="x" class="w-7 h-7"></i>
       </button>
-      <div class="bg-brand-gold/20 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-brand-gold">
-        <i data-lucide="credit-card" class="w-6 h-6"></i>
+      <div class="bg-brand-gold/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-gold">
+        <i data-lucide="credit-card" class="w-8 h-8"></i>
       </div>
-      <h3 class="text-xl font-bold text-brand-green mb-2">Secure Safari Deposit & Payment</h3>
-      <p class="text-xs text-gray-600 mb-6">We accept Visa, MasterCard, Bank Wire Transfer, and Direct Payment Gateway.</p>
+      <h3 class="text-2xl font-bold text-brand-green mb-3">Secure Safari Deposit & Payment</h3>
+      <p class="text-sm text-gray-600 mb-6">We accept Visa, MasterCard, Bank Wire Transfer, and Direct Payment Gateway.</p>
       
-      <div class="bg-brand-sand p-4 rounded-xl text-left border mb-6 text-xs space-y-2">
+      <div class="bg-brand-sand p-5 rounded-2xl text-left border mb-6 text-sm space-y-3">
         <p><strong>Bank Wire Transfer:</strong> Contact us for Official Proforma Invoice & IBAN.</p>
         <p><strong>Card Processing:</strong> Secure link dispatched via WhatsApp / Email upon booking confirmation.</p>
       </div>
 
-      <a href="https://wa.me/255623377391?text=Hello%20PameTours,%20I'd%20like%20to%20request%20a%20payment%20link/invoice." target="_blank" class="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-xs">
+      <a href="https://wa.me/255623377391?text=Hello%20PameTours,%20I'd%20like%20to%20request%20a%20payment%20link/invoice." target="_blank" class="block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-2xl text-sm uppercase tracking-wider">
         Request Payment Link via WhatsApp
       </a>
     </div>
@@ -804,77 +1145,77 @@
 
   <!-- CHAT AI ASSISTANT WIDGET -->
   <button @click="chatOpen = !chatOpen" class="fixed bottom-6 right-6 z-50 bg-brand-gold hover:bg-yellow-500 text-brand-dark p-4 rounded-full shadow-2xl flex items-center gap-2 font-bold">
-    <i data-lucide="bot" class="w-6 h-6"></i>
-    <span class="hidden md:inline">Ask AI Assistant</span>
+    <i data-lucide="bot" class="w-7 h-7"></i>
+    <span class="hidden md:inline" x-text="t[currentLang].ai"></span>
   </button>
 
-  <div x-show="chatOpen" class="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col h-[480px]">
-    <div class="bg-brand-green text-white p-4 flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <i data-lucide="bot" class="w-5 h-5 text-brand-gold"></i>
-        <h4 class="font-bold text-sm">PameTours AI Assistant</h4>
+  <div x-show="chatOpen" class="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col h-[520px]">
+    <div class="bg-brand-green text-white p-5 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <i data-lucide="bot" class="w-6 h-6 text-brand-gold"></i>
+        <h4 class="font-bold text-base" x-text="t[currentLang].ai"></h4>
       </div>
-      <button @click="chatOpen = false"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button @click="chatOpen = false"><i data-lucide="x" class="w-6 h-6"></i></button>
     </div>
-    <div id="chat-body" class="flex-1 p-4 overflow-y-auto space-y-3 bg-brand-sand/50 text-xs">
+    <div id="chat-body" class="flex-1 p-5 overflow-y-auto space-y-4 bg-brand-sand/50 text-sm">
       <template x-for="(msg, index) in chatMessages" :key="index">
         <div :class="msg.sender === 'user' ? 'flex justify-end' : 'flex justify-start'">
-          <div :class="msg.sender === 'user' ? 'bg-brand-green text-white' : 'bg-white text-gray-800 border'" class="max-w-[85%] p-3 rounded-xl shadow-sm">
+          <div :class="msg.sender === 'user' ? 'bg-brand-green text-white' : 'bg-white text-gray-800 border'" class="max-w-[85%] p-4 rounded-2xl shadow-sm leading-relaxed">
             <p x-text="msg.text"></p>
           </div>
         </div>
       </template>
     </div>
-    <form @submit.prevent="sendMessage()" class="p-3 bg-white border-t flex items-center gap-2">
-      <input type="text" x-model="userMessage" placeholder="Ask about safaris..." class="flex-1 px-3 py-2 border rounded-xl text-xs focus:outline-none">
-      <button type="submit" class="bg-brand-gold text-brand-dark p-2 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
+    <form @submit.prevent="sendMessage()" class="p-4 bg-white border-t flex items-center gap-3">
+      <input type="text" x-model="userMessage" placeholder="Ask about safaris..." class="flex-1 px-4 py-3 border rounded-2xl text-sm focus:outline-none">
+      <button type="submit" class="bg-brand-gold text-brand-dark p-3 rounded-2xl"><i data-lucide="send" class="w-5 h-5"></i></button>
     </form>
   </div>
 
   <!-- FOOTER -->
-  <footer class="bg-brand-dark text-gray-300 border-t border-brand-gold/20 pt-12 pb-6 text-sm w-full shrink-0">
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+  <footer class="bg-brand-dark text-gray-300 border-t border-brand-gold/20 pt-16 pb-8 text-base w-full shrink-0">
+    <div class="max-w-[92%] mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
       <div>
-        <span class="text-xl font-bold text-white">PAME <span class="text-brand-gold">TOURS</span></span>
-        <p class="text-xs text-gray-400 mt-2">Your gateway to Tanzanian wilderness and cultural safaris.</p>
+        <span class="text-2xl font-bold text-white">PAME <span class="text-brand-gold">TOURS</span></span>
+        <p class="text-sm text-gray-400 mt-3 leading-relaxed">Your gateway to Tanzanian wilderness and cultural safaris.</p>
         
-        <!-- Social Media Links -->
-        <div class="flex space-x-3 text-brand-gold pt-3">
-          <a href="https://www.facebook.com/61593326076324/posts/122100120609444202/?substory_index=1802107107803327&app=fbl" target="_blank" class="w-8 h-8 rounded-full bg-brand-green flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition-all">
-            <i data-lucide="facebook" class="w-4 h-4"></i>
+        <div class="flex space-x-4 text-brand-gold pt-4">
+          <a href="https://www.facebook.com/61593326076324/posts/122100120609444202/?substory_index=1802107107803327&app=fbl" target="_blank" class="w-10 h-10 rounded-full bg-brand-green flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition-all">
+            <i data-lucide="facebook" class="w-5 h-5"></i>
           </a>
-          <a href="https://www.instagram.com/pame.tours?igsh=MWV5NGQ4NnpoZTVodQ==" target="_blank" class="w-8 h-8 rounded-full bg-brand-green flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition-all">
-            <i data-lucide="instagram" class="w-4 h-4"></i>
+          <a href="https://www.instagram.com/pame.tours?igsh=MWV5NGQ4NnpoZTVodQ==" target="_blank" class="w-10 h-10 rounded-full bg-brand-green flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition-all">
+            <i data-lucide="instagram" class="w-5 h-5"></i>
           </a>
-          <a href="https://wa.me/255623377391" target="_blank" class="w-8 h-8 rounded-full bg-brand-green flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition-all">
-            <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <a href="https://wa.me/255623377391" target="_blank" class="w-10 h-10 rounded-full bg-brand-green flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition-all">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
           </a>
         </div>
       </div>
 
       <div>
-        <h4 class="text-white font-bold mb-3 text-xs uppercase tracking-wider">Navigation</h4>
-        <ul class="space-y-1 text-xs text-gray-400">
-          <li><button @click="activePage = 'home'" class="hover:text-brand-gold">Home</button></li>
-          <li><button @click="activePage = 'packages'" class="hover:text-brand-gold">Packages</button></li>
-          <li><button @click="activePage = 'contact'" class="hover:text-brand-gold">Contact</button></li>
-          <li><button @click="paymentModalOpen = true" class="hover:text-brand-gold">Online Payments</button></li>
+        <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider" x-text="t[currentLang].home"></h4>
+        <ul class="space-y-2 text-sm text-gray-400">
+          <li><button @click="activePage = 'home'" class="hover:text-brand-gold" x-text="t[currentLang].home"></button></li>
+          <li><button @click="activePage = 'packages'" class="hover:text-brand-gold" x-text="t[currentLang].packages"></button></li>
+          <li><button @click="activePage = 'accommodation'" class="hover:text-brand-gold" x-text="t[currentLang].accommodation"></button></li>
+          <li><button @click="activePage = 'contact'" class="hover:text-brand-gold" x-text="t[currentLang].contact"></button></li>
+          <li><button @click="paymentModalOpen = true" class="hover:text-brand-gold" x-text="t[currentLang].pay"></button></li>
         </ul>
       </div>
 
       <div>
-        <h4 class="text-white font-bold mb-3 text-xs uppercase tracking-wider">Contact</h4>
-        <p class="text-xs text-gray-400">Arusha, Tanzania<br>info@pametours.com</p>
+        <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider" x-text="t[currentLang].contact"></h4>
+        <p class="text-sm text-gray-400 leading-relaxed">Arusha, Tanzania<br>info@pametours.com</p>
       </div>
 
       <div>
-        <h4 class="text-white font-bold mb-3 text-xs uppercase tracking-wider">Newsletter</h4>
-        <input type="email" placeholder="Email Address" class="w-full px-3 py-1.5 bg-brand-green/50 border border-gray-700 rounded text-xs text-white mb-2">
-        <button class="w-full bg-brand-gold text-brand-dark font-bold py-1.5 rounded text-xs">Subscribe</button>
+        <h4 class="text-white font-bold mb-4 text-sm uppercase tracking-wider">Newsletter</h4>
+        <input type="email" placeholder="Email Address" class="w-full px-4 py-2.5 bg-brand-green/50 border border-gray-700 rounded-xl text-sm text-white mb-3">
+        <button class="w-full bg-brand-gold text-brand-dark font-bold py-2.5 rounded-xl text-sm uppercase tracking-wider">Subscribe</button>
       </div>
     </div>
 
-    <div class="border-t border-white/10 text-center pt-6 text-xs text-gray-400">
+    <div class="border-t border-white/10 text-center pt-8 text-sm text-gray-400">
       <p>&copy; 2026 PameTours. All rights reserved.</p>
     </div>
   </footer>
